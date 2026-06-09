@@ -26,39 +26,54 @@ const MyTuition = () => {
 
   if (loading)
     return (
-      <div className="flex justify-center items-center h-[50vh] text-xl font-semibold">
-        <LoadingSpinner></LoadingSpinner>
+      <div className="flex justify-center items-center h-[50vh]">
+        <LoadingSpinner />
       </div>
     );
 
   return (
-    <div className="container mx-auto px-4 sm:px-8">
-      <div className="py-8">
-        <div className="-mx-4 sm:-mx-8 px-4 sm:px-8 py-4 overflow-x-auto">
-          <div className="inline-block min-w-full shadow rounded-xl overflow-hidden">
-            <table className="min-w-full leading-normal">
-              <thead>
-                <tr className="bg-gray-100">
-                  <th className="px-5 bg-lime-200 py-3 border-b">Image</th>
-                  <th className="px-5 bg-lime-200 py-3 border-b">Name</th>
-                  <th className="px-5 bg-lime-200 py-3 border-b">Subject</th>
-                  <th className="px-5 bg-lime-200 py-3 border-b">Budget</th>
-                  <th className="px-5 bg-lime-200 py-3 border-b">Schedule</th>
-                  <th className="px-5 bg-lime-200 py-3 border-b">Status</th>
-                  <th className="px-5 bg-lime-200 py-3 border-b">Action</th>
-                </tr>
-              </thead>
+    <div className="min-h-screen bg-white dark:bg-gray-900 transition-colors">
+      <div className="container mx-auto px-4 sm:px-8">
+        <div className="py-8">
+          {/* Heading */}
 
-              <tbody>
-                {tuitions.map((item) => (
-                  <CustomerOrderDataRow
-                    key={item._id}
-                    item={item}
-                    refetch={fetchData}
-                  />
-                ))}
-              </tbody>
-            </table>
+          <div className="-mx-4 sm:-mx-8 px-4 sm:px-8 py-4 overflow-x-auto">
+            <div className="inline-block min-w-full rounded-xl overflow-hidden border border-gray-200 dark:border-gray-700">
+              <table className="min-w-full leading-normal">
+                <thead>
+                  <tr>
+                    {[
+                      "Image",
+                      "Name",
+                      "Subject",
+                      "Budget",
+                      "Schedule",
+                      "Status",
+                      "Action",
+                    ].map((h) => (
+                      <th
+                        key={h}
+                        className="px-5 py-3 border-b border-gray-200 dark:border-gray-700
+                          bg-lime-200 dark:bg-gray-700
+                          text-gray-700 dark:text-gray-200
+                          text-left text-xs font-semibold uppercase tracking-wider"
+                      >
+                        {h}
+                      </th>
+                    ))}
+                  </tr>
+                </thead>
+                <tbody className="bg-white dark:bg-gray-800 divide-y divide-gray-100 dark:divide-gray-700">
+                  {tuitions.map((item) => (
+                    <CustomerOrderDataRow
+                      key={item._id}
+                      item={item}
+                      refetch={fetchData}
+                    />
+                  ))}
+                </tbody>
+              </table>
+            </div>
           </div>
         </div>
       </div>

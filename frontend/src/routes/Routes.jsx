@@ -25,7 +25,6 @@ import ReportsAnalyticsPage from "../components/Dashboard/Sidebar/adminPages/Rep
 import AdminStatistics from "../components/Dashboard/Statistics/AdminStatistics";
 import TutorStatistics from "../components/Dashboard/Statistics/TutorStatistics";
 import StudentStatistics from "../components/Dashboard/Statistics/StudentStatistics";
-import Tuition from "../components/Home/Tuition";
 import AllTuitions from "../components/Shared/Navbar/AllTuitions";
 import About from "../components/Shared/About";
 import Contact from "../components/Shared/Contact";
@@ -43,27 +42,31 @@ export const router = createBrowserRouter([
         element: <Home />,
       },
       {
-        path: "/all-tuitions", // Tutor Profile inside Dashboard
+        path: "/all-tuitions",
         element: <AllTuitions />,
       },
       {
-        path: "about",
-        element: <About></About>,
+        path: "/about",
+        element: <About />,
       },
       {
         path: "/contact",
-        element: <Contact></Contact>,
+        element: <Contact />,
+      },
+      {
+        path: "/tutors", // ✅ Public Tutors page — no login needed
+        element: <Tutor />,
+      },
+      {
+        path: "/tutors/:id", // ✅ Public Tutor Profile — no login needed
+        element: <TutorProfile />,
       },
       {
         path: "/tuition/:id",
         element: <TuitionDetails />,
       },
       {
-        path: "/tutors/:id", // Public Tutor Profile (sidebar nai)
-        element: <TutorProfile />,
-      },
-      {
-        path: "add-tuition",
+        path: "/add-tuition",
         element: (
           <PrivateRoute>
             <AddTuition />
@@ -71,7 +74,7 @@ export const router = createBrowserRouter([
         ),
       },
       {
-        path: "tutor-applied-tuition",
+        path: "/tutor-applied-tuition",
         element: (
           <PrivateRoute>
             <TutorAppliedTuition />
@@ -79,7 +82,7 @@ export const router = createBrowserRouter([
         ),
       },
       {
-        path: "my-applied-tuition",
+        path: "/my-applied-tuition",
         element: (
           <PrivateRoute>
             <MyAppliedTuition />
@@ -87,7 +90,7 @@ export const router = createBrowserRouter([
         ),
       },
       {
-        path: "manage-users",
+        path: "/manage-users",
         element: (
           <PrivateRoute>
             <ManageUsers />
@@ -95,7 +98,7 @@ export const router = createBrowserRouter([
         ),
       },
       {
-        path: "profile",
+        path: "/profile",
         element: (
           <PrivateRoute>
             <Profile />
@@ -103,7 +106,7 @@ export const router = createBrowserRouter([
         ),
       },
       {
-        path: "my-tuition",
+        path: "/my-tuition",
         element: (
           <PrivateRoute>
             <MyTuition />
@@ -111,57 +114,48 @@ export const router = createBrowserRouter([
         ),
       },
       {
-        path: "manage-student-post",
+        path: "/manage-student-post",
         element: <ManageStudentPost />,
       },
       {
-        path: "student-payment-history",
+        path: "/student-payment-history",
         element: <StudentPaymentHistory />,
       },
       {
-        path: "tutor-ongoing-tuitions",
+        path: "/tutor-ongoing-tuitions",
         element: <TutorOngoingTuitions />,
       },
       {
-        path: "revenue-history",
+        path: "/revenue-history",
         element: <RevenueHistory />,
       },
       {
-        path: "reports-analytics",
+        path: "/reports-analytics",
         element: <ReportsAnalyticsPage />,
       },
-
-      // Dashboard Tutors Routes
       {
-        path: "users/tutors", // All Tutors inside Dashboard
-        element: <Tutor />,
-      },
-      {
-        path: "tutors/:id", // Tutor Profile inside Dashboard
-        element: <TutorProfile />,
-      },
-      {
-        path: "admin-statistics", // Tutor Profile inside Dashboard
+        path: "/admin-statistics",
         element: <AdminStatistics />,
       },
       {
-        path: "tutor-statistics", // Tutor Profile inside Dashboard
+        path: "/tutor-statistics",
         element: <TutorStatistics />,
       },
       {
-        path: "student-statistics", // Tutor Profile inside Dashboard
+        path: "/student-statistics",
         element: <StudentStatistics />,
       },
       {
-        path: "profile-setting",
-        element: <ProfileSetting></ProfileSetting>,
+        path: "/profile-setting",
+        element: <ProfileSetting />,
       },
     ],
   },
+
   { path: "/login", element: <Login /> },
   { path: "/signup", element: <SignUp /> },
   {
-    path: "payment-complete", // Tutor Profile inside Dashboard
+    path: "/payment-complete",
     element: <PaymentComplete />,
   },
 
@@ -250,31 +244,29 @@ export const router = createBrowserRouter([
         path: "reports-analytics",
         element: <ReportsAnalyticsPage />,
       },
-
-      // Dashboard Tutors Routes
       {
-        path: "users/tutors", // All Tutors inside Dashboard
+        path: "users/tutors",
         element: <Tutor />,
       },
       {
-        path: "tutors/:id", // Tutor Profile inside Dashboard
+        path: "tutors/:id",
         element: <TutorProfile />,
       },
       {
-        path: "admin-statistics", // Tutor Profile inside Dashboard
+        path: "admin-statistics",
         element: <AdminStatistics />,
       },
       {
-        path: "tutor-statistics", // Tutor Profile inside Dashboard
+        path: "tutor-statistics",
         element: <TutorStatistics />,
       },
       {
-        path: "student-statistics", // Tutor Profile inside Dashboard
+        path: "student-statistics",
         element: <StudentStatistics />,
       },
       {
         path: "profile-setting",
-        element: <ProfileSetting></ProfileSetting>,
+        element: <ProfileSetting />,
       },
     ],
   },

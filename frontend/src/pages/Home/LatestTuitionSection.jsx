@@ -19,10 +19,7 @@ const LatestTuitionSection = () => {
   }, []);
 
   useEffect(() => {
-    AOS.init({
-      duration: 900,
-      once: true,
-    });
+    AOS.init({ duration: 900, once: true });
   }, []);
 
   if (loading) {
@@ -35,7 +32,7 @@ const LatestTuitionSection = () => {
 
   if (tuitions.length === 0) {
     return (
-      <div className="text-center py-20 text-gray-500 text-lg">
+      <div className="text-center py-20 text-gray-500 dark:text-gray-400 text-lg">
         😕 No Latest Tuition Found
       </div>
     );
@@ -44,27 +41,21 @@ const LatestTuitionSection = () => {
   return (
     <section
       data-aos="fade-up"
-      className="py-20 w-[full] bg-gradient-to-b from-gray-50 to-white"
+      className="py-20 bg-gradient-to-b from-gray-50 to-white dark:from-gray-900 dark:to-gray-900"
     >
       <div className="container mx-auto px-6">
         {/* Section Title */}
-        <div className="text-center mb-12">
-          <h2 className="text-3xl font-bold text-gray-800">
-            🚀 Latest Tuition Opportunities
-          </h2>
-          <p className="text-gray-500 mt-2">
-            Find the newest tutoring jobs near you 📍
-          </p>
-        </div>
 
         {/* Grid */}
-        <div className="grid w-[full] mx-auto gap-8 md:grid-cols-2 lg:grid-cols-3">
+        <div className="grid mx-auto gap-8 md:grid-cols-2 lg:grid-cols-3">
           {tuitions.map((tuition) => (
             <div
               data-aos="fade-up"
               key={tuition._id}
-              className="group bg-white border border-gray-100 rounded-2xl shadow-sm 
-              hover:shadow-2xl hover:-translate-y-2 transition-all duration-300 overflow-hidden"
+              className="group bg-white dark:bg-gray-800
+                border border-gray-100 dark:border-gray-700
+                rounded-2xl shadow-sm hover:shadow-2xl
+                hover:-translate-y-2 transition-all duration-300 overflow-hidden"
             >
               {/* Image */}
               <div className="relative h-48 overflow-hidden">
@@ -73,41 +64,45 @@ const LatestTuitionSection = () => {
                   alt={tuition.subject}
                   className="h-full w-full object-cover group-hover:scale-110 transition-transform duration-500"
                 />
-
-                <div className="absolute inset-0 bg-gradient-to-t from-black/50 via-black/10 to-transparent"></div>
+                <div className="absolute inset-0 bg-gradient-to-t from-black/50 via-black/10 to-transparent" />
 
                 {/* Badge */}
-                <div className="absolute top-3 left-3 bg-white/80 backdrop-blur px-3 py-1 text-xs rounded-full font-medium">
+                <div className="absolute top-3 left-3 bg-white/80 dark:bg-gray-900/80 backdrop-blur px-3 py-1 text-xs rounded-full font-medium text-gray-800 dark:text-gray-200">
                   {tuition.subject}
                 </div>
               </div>
 
               {/* Content */}
               <div className="p-6 flex flex-col gap-2">
-                <h3 className="text-lg font-semibold text-gray-800">
+                <h3 className="text-lg font-semibold text-gray-800 dark:text-white">
                   {tuition.subject} Tuition
                 </h3>
 
-                <p className="text-gray-500 text-sm">
+                <p className="text-gray-500 dark:text-gray-400 text-sm">
                   🎓 Class:{" "}
-                  <span className="text-gray-700">{tuition.class}</span>
+                  <span className="text-gray-700 dark:text-gray-300">
+                    {tuition.class}
+                  </span>
                 </p>
 
-                <p className="text-gray-500 text-sm">
+                <p className="text-gray-500 dark:text-gray-400 text-sm">
                   📍 Location:{" "}
-                  <span className="text-gray-700">{tuition.location}</span>
+                  <span className="text-gray-700 dark:text-gray-300">
+                    {tuition.location}
+                  </span>
                 </p>
 
-                <p className="text-lime-600 font-bold mt-1">
+                <p className="text-lime-600 dark:text-lime-400 font-bold mt-1">
                   💰 ৳{tuition.budget}
                 </p>
 
-                {/* Button */}
                 <Link
                   to={`/tuition/${tuition._id}`}
-                  className="mt-4 inline-flex items-center justify-center w-full py-2.5 
-                  rounded-xl bg-lime-500 text-white 
-                  font-medium shadow-md hover:shadow-lg hover:scale-[1.02] transition-all duration-300"
+                  className="mt-4 inline-flex items-center justify-center w-full py-2.5
+                    rounded-xl bg-lime-500 hover:bg-lime-600
+                    dark:bg-lime-600 dark:hover:bg-lime-500
+                    text-white font-medium shadow-md
+                    hover:shadow-lg hover:scale-[1.02] transition-all duration-300"
                 >
                   View Details
                 </Link>

@@ -23,38 +23,36 @@ const ManageStudentPost = () => {
   }, []);
 
   return (
-    <div className="container mx-auto px-4 sm:px-8 ">
-      <h2 className="text-2xl font-bold mb-4 mt-16">Pending Tuitions</h2>
+    <div className="container mx-auto px-4 sm:px-8">
+      <h2 className="text-2xl font-bold mb-4 mt-16 text-gray-900 dark:text-white">
+        Pending Tuitions
+      </h2>
       <div className="-mx-4 sm:-mx-8 px-4 sm:px-8 overflow-x-auto">
-        <div className="inline-block min-w-full shadow-md rounded-lg overflow-hidden">
+        <div className="inline-block min-w-full rounded-lg overflow-hidden border border-gray-200 dark:border-gray-700">
           <table className="min-w-full leading-normal">
             <thead>
               <tr>
-                <th className="px-5 py-3 bg-lime-200 text-left text-xs font-semibold uppercase tracking-wider">
-                  Subject
-                </th>
-                <th className="px-5 py-3 bg-lime-200 text-left text-xs font-semibold uppercase tracking-wider">
-                  Student Email
-                </th>
-                <th className="px-5 py-3 bg-lime-200 text-left text-xs font-semibold uppercase tracking-wider">
-                  Budget
-                </th>
-                <th className="px-5 py-3 bg-lime-200 text-left text-xs font-semibold uppercase tracking-wider">
-                  Class
-                </th>
-                <th className="px-5 py-3 bg-lime-200 text-left text-xs font-semibold uppercase tracking-wider">
-                  Location
-                </th>
-                <th className="px-5 py-3 bg-lime-200 text-left text-xs font-semibold uppercase tracking-wider">
-                  Status
-                </th>
-                <th className="px-5 py-3 bg-lime-200 text-left text-xs font-semibold uppercase tracking-wider">
-                  Action
-                </th>
+                {[
+                  "Subject",
+                  "Student Email",
+                  "Budget",
+                  "Class",
+                  "Location",
+                  "Status",
+                  "Action",
+                ].map((heading) => (
+                  <th
+                    key={heading}
+                    className="px-5 py-3 bg-lime-200 dark:bg-gray-700
+                      text-left text-xs font-semibold uppercase tracking-wider
+                      text-gray-700 dark:text-gray-200"
+                  >
+                    {heading}
+                  </th>
+                ))}
               </tr>
             </thead>
-
-            <tbody>
+            <tbody className="bg-white dark:bg-gray-800 divide-y divide-gray-200 dark:divide-gray-700">
               {pending.map((t) => (
                 <SellerOrderDataRow
                   key={t._id}

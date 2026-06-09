@@ -9,7 +9,6 @@ const TutorOngoingTuitions = () => {
 
   useEffect(() => {
     if (!user?.email) return;
-
     setLoading(true);
     fetch(`https://tuitionsbd.vercel.app/tutor/ongoing/${user.email}`)
       .then((res) => res.json())
@@ -26,19 +25,27 @@ const TutorOngoingTuitions = () => {
   if (loading) return <LoadingSpinner />;
 
   return (
-    <div className="p-6 mt-9">
+    <div className="p-6 mt-9 min-h-screen bg-white dark:bg-gray-900 transition-colors">
       {/* Title */}
-      <h2 className="text-3xl font-bold mb-10 border-b pb-3 text-indigo-600">
-        📚 Tutor Ongoing Tuitions
-      </h2>
+      <div className="mb-8 text-center">
+        <span className="inline-block bg-indigo-100 dark:bg-indigo-900/40 text-indigo-600 dark:text-indigo-400 text-[10px] md:text-xs font-semibold px-3 md:px-4 py-1 rounded-full mb-2 md:mb-3 tracking-widest uppercase">
+          Dashboard
+        </span>
+        <h1 className="text-3xl md:text-5xl font-black text-gray-900 dark:text-white tracking-tight">
+          Tutor Ongoing Tuitions
+        </h1>
+        <p className="text-gray-400 dark:text-gray-500 mt-1 md:mt-3 text-sm md:text-base">
+          All your active and accepted tuition sessions
+        </p>
+      </div>
 
       {/* Empty State */}
       {tuitions.length === 0 ? (
         <div className="text-center py-20">
-          <h3 className="text-2xl font-semibold text-gray-600">
+          <h3 className="text-2xl font-semibold text-gray-600 dark:text-gray-400">
             😔 No Accepted Tuitions Found
           </h3>
-          <p className="text-gray-400 mt-2">
+          <p className="text-gray-400 dark:text-gray-500 mt-2">
             Once a student accepts and completes payment, it will appear here.
           </p>
         </div>
@@ -47,51 +54,62 @@ const TutorOngoingTuitions = () => {
           {tuitions.map((tuition) => (
             <div
               key={tuition._id}
-              className="group bg-white/80 backdrop-blur-lg border border-gray-200 rounded-3xl shadow-lg hover:shadow-2xl hover:-translate-y-2 transition-all duration-300 p-6 flex flex-col justify-between"
+              className="group bg-white dark:bg-gray-800
+                border border-gray-200 dark:border-gray-700
+                rounded-3xl shadow-lg hover:shadow-2xl
+                hover:-translate-y-2 transition-all duration-300
+                p-6 flex flex-col justify-between"
             >
               {/* Header */}
               <div className="flex justify-between items-start mb-4">
                 <div className="max-w-[70%]">
-                  <h3 className="text-xl font-bold text-indigo-700 flex items-center gap-2">
+                  <h3 className="text-xl font-bold text-indigo-700 dark:text-indigo-400">
                     {tuition.tutorName}
                   </h3>
-                  <p className="text-sm text-gray-500 break-words mt-1">
+                  <p className="text-sm text-gray-500 dark:text-gray-400 break-words mt-1">
                     {tuition.tutorEmail}
                   </p>
                 </div>
 
-                {/* Status */}
+                {/* Status Badge */}
                 <span
                   className={`px-3 py-1 text-sm font-semibold rounded-full ${
                     tuition.status === "Pending"
-                      ? "bg-yellow-100 text-yellow-600"
+                      ? "bg-yellow-100 dark:bg-yellow-900/40 text-yellow-600 dark:text-yellow-400"
                       : tuition.status === "Accepted"
-                        ? "bg-green-100 text-green-600"
-                        : "bg-red-100 text-red-500"
+                        ? "bg-green-100 dark:bg-green-900/40 text-green-600 dark:text-green-400"
+                        : "bg-red-100 dark:bg-red-900/40 text-red-500 dark:text-red-400"
                   }`}
                 >
                   {tuition.status === "Pending"
-                    ? "⏳ Pending"
+                    ? "Pending"
                     : tuition.status === "Accepted"
-                      ? " Active"
+                      ? "Active"
                       : "Closed"}
                 </span>
               </div>
 
               {/* Body */}
-              <div className="space-y-3 text-gray-700 text-sm">
+              <div className="space-y-3 text-sm text-gray-700 dark:text-gray-300">
                 <p className="flex items-center gap-2">
-                  🎓 <span className="font-semibold">Qualification:</span>{" "}
+                  🎓{" "}
+                  <span className="font-semibold text-gray-800 dark:text-gray-200">
+                    Qualification:
+                  </span>{" "}
                   {tuition.qualification || "Not Provided"}
                 </p>
-
                 <p className="flex items-center gap-2">
-                  💰 <span className="font-semibold">Salary:</span> ৳
-                  {tuition.expectedSalary}
+                  💰{" "}
+                  <span className="font-semibold text-gray-800 dark:text-gray-200">
+                    Salary:
+                  </span>{" "}
+                  ৳{tuition.expectedSalary}
                 </p>
-
                 <p className="flex items-center gap-2">
-                  📅 <span className="font-semibold">Applied:</span>{" "}
+                  📅{" "}
+                  <span className="font-semibold text-gray-800 dark:text-gray-200">
+                    Applied:
+                  </span>{" "}
                   {tuition.appliedAt
                     ? new Date(tuition.appliedAt).toLocaleDateString()
                     : "N/A"}
@@ -100,8 +118,13 @@ const TutorOngoingTuitions = () => {
 
               {/* Footer Button */}
               <div className="mt-6">
-                <button className="w-full bg-gradient-to-r from-indigo-500 to-purple-600 text-white py-2 rounded-xl font-semibold hover:scale-105 transition-all duration-300 shadow-md">
-                  🚀 Mark as Completed
+                <button
+                  className="w-full bg-gradient-to-r from-lime-500 to-lime-600
+                  hover:from-lime-600 hover:to-lime-700
+                  text-white py-2 rounded-xl font-semibold
+                  hover:scale-105 transition-all duration-300 shadow-md"
+                >
+                  Mark as Completed
                 </button>
               </div>
             </div>

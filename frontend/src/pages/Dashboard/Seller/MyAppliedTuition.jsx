@@ -91,7 +91,7 @@ const MyAppliedTuition = () => {
     <div className="min-h-screen bg-[radial-gradient(ellipse_at_top_left,_var(--tw-gradient-stops))] from-indigo-100 via-white to-purple-100 px-3 md:px-4 py-8 md:py-14">
       {/* HEADER */}
       <div data-aos="fade-down" className="text-center mb-6 md:mb-12">
-        <span className="inline-block bg-indigo-100 text-indigo-600 text-[10px] md:text-xs font-semibold px-3 md:px-4 py-1 rounded-full mb-2 md:mb-3 tracking-widest uppercase">
+        <span className="inline-block bg-indigo-100 dark:bg-indigo-900/40 text-indigo-600 dark:text-indigo-400 text-[10px] md:text-xs font-semibold px-3 md:px-4 py-1 rounded-full mb-2 md:mb-3 tracking-widest uppercase">
           Dashboard
         </span>
         <h1 className="text-3xl md:text-5xl font-black text-gray-900 tracking-tight">

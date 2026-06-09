@@ -55,8 +55,8 @@ const Footer = () => {
         <div>
           <h2 className="text-lg font-semibold text-white mb-4">Contact</h2>
           <p className="text-sm">📍 Dhaka, Bangladesh</p>
-          <p className="text-sm">📧 support@etuitionbd.com</p>
-          <p className="text-sm">📞 +880 1234-567890</p>
+          <p className="text-sm">📧 faysalhasanmd393@gmail.com</p>
+          <p className="text-sm">📞 +880 1798484639</p>
         </div>
 
         {/* Social Media */}
