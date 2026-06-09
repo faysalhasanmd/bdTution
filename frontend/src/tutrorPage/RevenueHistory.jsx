@@ -50,7 +50,7 @@ const RevenueHistory = () => {
   return (
     <div className="min-h-screen bg-slate-50 dark:bg-gray-900 px-3 py-6 sm:px-6 sm:py-8 lg:px-10 lg:py-10 mt-6 sm:mt-8 lg:mt-9 transition-colors">
       {/* Header */}
-      <div className="text-center mb-8">
+      {/* <div className="text-center mb-8">
         <span className="inline-block bg-indigo-100 dark:bg-indigo-900/40 text-indigo-600 dark:text-indigo-400 text-[10px] md:text-xs font-semibold px-3 md:px-4 py-1 rounded-full mb-2 md:mb-3 tracking-widest uppercase">
           Dashboard
         </span>
@@ -60,7 +60,7 @@ const RevenueHistory = () => {
         <p className="text-gray-400 dark:text-gray-500 mt-1 md:mt-3 text-sm md:text-base">
           Track all your earnings from tutoring sessions
         </p>
-      </div>
+      </div> */}
 
       {/* Stats Row */}
       <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 sm:gap-4 mb-6 sm:mb-8">
