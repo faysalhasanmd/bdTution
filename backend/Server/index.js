@@ -29,7 +29,6 @@ app.use(
     origin: [
       "http://localhost:5173",
       "http://localhost:5174",
-      "https://bdtuitions.vercel.app",
       "https://cerulean-maamoul-f79e46.netlify.app",
       "https://preeminent-mermaid-04ba7b.netlify.app",
     ],
