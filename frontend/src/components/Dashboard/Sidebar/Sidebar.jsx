@@ -6,7 +6,7 @@ import { GrLogout } from "react-icons/gr";
 import { FcSettings } from "react-icons/fc";
 import MenuItem from "./Menu/MenuItem";
 import AdminMenu from "./Menu/AdminMenu";
-import SellerMenu from "./Menu/SellerMenu";
+import TutorMenu from "./Menu/TutorMenu";
 import StudentMenu from "./Menu/StudentMenu";
 
 const Sidebar = ({
@@ -43,7 +43,7 @@ const Sidebar = ({
               <StudentMenu onNavigate={() => setSidebarOpen(false)} />
             )}
             {role?.toLowerCase() === "tutor" && (
-              <SellerMenu onNavigate={() => setSidebarOpen(false)} />
+              <TutorMenu onNavigate={() => setSidebarOpen(false)} />
             )}
             {role?.toLowerCase() === "admin" && (
               <AdminMenu onNavigate={() => setSidebarOpen(false)} />

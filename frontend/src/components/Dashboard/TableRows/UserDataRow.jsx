@@ -11,6 +11,7 @@ const UserDataRow = ({ user, fetchUsers }) => {
 
       <td className="px-5 py-5 border-b border-gray-200 bg-white text-sm">
         <img
+          loading="lazy"
           src={user.image || "/default-avatar.png"} // default image
           alt={user.email}
           className="w-10 h-10 rounded-full mx-auto"

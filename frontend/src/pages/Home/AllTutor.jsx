@@ -15,13 +15,6 @@ const AllTutor = () => {
 
   return (
     <div className="py-6 bg-gradient-to-r from-indigo-50 to-white dark:from-gray-900 dark:to-gray-900">
-      <div className="text-center mb-10">
-        <h2 className="text-3xl text-blue-500 dark:text-blue-400 md:text-4xl font-bold relative inline-block pb-3">
-          Our All Tutors
-          <span className="absolute left-1/2 -translate-x-1/2 bottom-0 w-24 h-1 bg-gradient-to-r from-blue-500 to-indigo-500 rounded-full" />
-        </h2>
-      </div>
-
       <Marquee speed={46} pauseOnHover gradient={false}>
         <div className="flex gap-5 px-6">
           {tutors.map((tutor) => (
@@ -39,6 +32,7 @@ const AllTutor = () => {
                 {/* Image */}
                 <div className="relative">
                   <img
+                    loading="lazy"
                     src={tutor.image || "https://i.ibb.co/4pDNDk1/avatar.png"}
                     alt={tutor.name}
                     className="w-full h-40 object-cover group-hover:scale-105 transition duration-500"

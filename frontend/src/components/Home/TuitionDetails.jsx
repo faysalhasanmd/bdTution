@@ -159,6 +159,7 @@ const TuitionDetails = () => {
       <div className="rounded-2xl overflow-hidden border border-gray-100 shadow-lg mb-8">
         <div className="relative h-72 sm:h-96 overflow-hidden bg-gray-100 group">
           <img
+            loading="lazy"
             src={images[activeImg]}
             alt={tuition.subject}
             className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
@@ -408,6 +409,7 @@ const TuitionDetails = () => {
               >
                 <div className="h-32 overflow-hidden bg-gray-100">
                   <img
+                    loading="lazy"
                     src={
                       rel.image ||
                       "https://images.unsplash.com/photo-1503676260728-1c00da094a0b?w=400&q=80"

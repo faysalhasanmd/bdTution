@@ -29,6 +29,7 @@ const MarqueeTuition = ({ tuitions }) => {
               {/* Image */}
               <div className="relative">
                 <img
+                  loading="lazy"
                   src={tuition.image}
                   alt="tuition"
                   className="w-full h-44 object-cover"

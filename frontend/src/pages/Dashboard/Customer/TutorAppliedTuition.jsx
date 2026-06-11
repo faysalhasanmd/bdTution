@@ -108,6 +108,7 @@ const TutorAppliedTuition = () => {
                   <div className="flex items-center gap-3 mb-4">
                     <div className="w-14 h-14 rounded-full overflow-hidden border-2 border-lime-200 dark:border-lime-700 shadow-sm group-hover:scale-105 transition">
                       <img
+                        loading="lazy"
                         src={app.tutorImage || defaultAvatar}
                         alt={app.tutorName}
                         className="w-full h-full object-cover"
@@ -152,7 +153,7 @@ const TutorAppliedTuition = () => {
                 {/* Status */}
                 <div className="mt-4">
                   <span className="text-sm font-medium text-gray-500 dark:text-gray-400">
-                    📊 Status:
+                    Status:
                   </span>
                   <span
                     className={`ml-2 px-3 py-1 rounded-full text-xs font-semibold ${
@@ -179,13 +180,13 @@ const TutorAppliedTuition = () => {
                         setSelectedApp(app);
                         setShowModal(true);
                       }}
-                      className="flex-1 bg-gradient-to-r from-green-400 to-green-600 hover:scale-105 transition text-white py-2 rounded-xl text-sm font-semibold shadow"
+                      className="w-full py-1.5 mt-3 bg-lime-500 text-white font-semibold rounded-md hover:bg-lime-600 transition-colors flex justify-center items-center"
                     >
                       Accept
                     </button>
                     <button
                       onClick={() => handleStatusChange(app._id, "Rejected")}
-                      className="flex-1 bg-gradient-to-r from-red-400 to-red-600 hover:scale-105 transition text-white py-2 rounded-xl text-sm font-semibold shadow"
+                      className="w-full py-1.5 mt-3 bg-red-500 text-white font-semibold rounded-md hover:bg-red-600 transition-colors flex justify-center items-center"
                     >
                       Reject
                     </button>

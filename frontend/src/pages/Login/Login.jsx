@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { Link, Navigate, useLocation, useNavigate } from "react-router";
 import toast from "react-hot-toast";
+import { signOut } from "firebase/auth";
 import useAuth from "../../hooks/useAuth";
 import { FcGoogle } from "react-icons/fc";
 import { TbFidgetSpinner } from "react-icons/tb";
@@ -19,30 +20,89 @@ const Login = () => {
   const [showPassword, setShowPassword] = useState(false);
   const [rememberMe, setRememberMe] = useState(false);
 
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+
   if (user) return <Navigate to={from} replace={true} />;
 
-  // ─── Client-side validation ───────────────────────────────────────────────
-  const validate = (email, password) => {
-    const newErrors = {};
-    if (!email.trim()) {
-      newErrors.email = "Email is required.";
-    } else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
-      newErrors.email = "Please enter a valid email address.";
+  // ── Client-side validation ────────────────────────────────────────────────
+  const validate = (emailVal, passwordVal) => {
+    const errs = {};
+    if (!emailVal.trim()) {
+      errs.email = "Email is required.";
+    } else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(emailVal)) {
+      errs.email = "Please enter a valid email address.";
     }
-    if (!password) {
-      newErrors.password = "Password is required.";
-    } else if (password.length < 6) {
-      newErrors.password = "Password must be at least 6 characters.";
+    if (!passwordVal) {
+      errs.password = "Password is required.";
+    } else if (passwordVal.length < 6) {
+      errs.password = "Password must be at least 6 characters.";
     }
-    return newErrors;
+    return errs;
   };
 
-  // ─── Form submit ──────────────────────────────────────────────────────────
+  // ── Demo auto-fill ────────────────────────────────────────────────────────
+  const handleDemoFill = (type) => {
+    setEmail(DEMO[type].email);
+    setPassword(DEMO[type].password);
+    setErrors({});
+    toast(`${DEMO[type].label} credentials filled! Click Continue to log in.`, {
+      icon: DEMO[type].icon,
+      duration: 3000,
+    });
+  };
+
+  const DEMO = {
+    student: {
+      email: "demostudent@bdtuitions.com",
+      password: "Student@1234",
+      label: "Demo Student",
+    },
+    tutor: {
+      email: "demotutor@bdtuitions.com",
+      password: "Tutor@1234",
+      label: "Demo Tutor",
+    },
+    admin: {
+      email: "demoadmin@bdtuitions.com",
+      password: "Admin@1234",
+      label: "Demo Admin",
+    },
+  };
+
+  // ── Token expiration scheduler ───────────────────
+  const scheduleTokenExpiry = async (firebaseUser) => {
+    try {
+      const tokenResult = await firebaseUser.getIdTokenResult();
+      const msUntilExpiry =
+        new Date(tokenResult.expirationTime).getTime() - Date.now();
+      if (msUntilExpiry > 0) {
+        if (msUntilExpiry > 2 * 60 * 1000) {
+          setTimeout(
+            () => {
+              toast("Your session will expire in 2 minutes.", {
+                icon: "⏳",
+                duration: 8000,
+              });
+            },
+            msUntilExpiry - 2 * 60 * 1000,
+          );
+        }
+        // Token expire logout
+        setTimeout(async () => {
+          await signOut(useAuth);
+          toast.error("Session expired. Please log in again.");
+          navigate("/login", { replace: true });
+        }, msUntilExpiry);
+      }
+    } catch {
+      // token check fail
+    }
+  };
+
+  // ── Form submit ───────────────────────────────────────────────────────────
   const handleSubmit = async (event) => {
     event.preventDefault();
-    const form = event.target;
-    const email = form.email.value;
-    const password = form.password.value;
 
     const validationErrors = validate(email, password);
     if (Object.keys(validationErrors).length > 0) {
@@ -54,19 +114,23 @@ const Login = () => {
     setSubmitting(true);
 
     try {
-      const { user } = await signIn(email, password);
+      const { user: firebaseUser } = await signIn(email, password);
+
+      // Token expiration handle
+      await scheduleTokenExpiry(firebaseUser);
+
       await saveAndUpdateUser({
-        name: user?.displayName,
-        email: user?.email,
-        image: user?.photoURL,
-        uid: user.uid,
+        name: firebaseUser?.displayName,
+        email: firebaseUser?.email,
+        image: firebaseUser?.photoURL,
+        uid: firebaseUser.uid,
         phone: "",
         role: "Student",
       });
+
       toast.success("Login successful! Welcome back.");
       navigate(from, { replace: true });
     } catch (err) {
-      console.log(err);
       const code = err?.code;
       if (
         code === "auth/user-not-found" ||
@@ -82,6 +146,8 @@ const Login = () => {
         setErrors({
           server: "This account has been disabled. Contact support.",
         });
+      } else if (code === "auth/id-token-expired") {
+        setErrors({ server: "Session expired. Please log in again." });
       } else {
         setErrors({ server: "Login failed. Please try again." });
       }
@@ -90,24 +156,27 @@ const Login = () => {
     }
   };
 
-  // ─── Google Sign-in ───────────────────────────────────────────────────────
+  // ── Google Sign-in ────────────────────────────────────────────────────────
   const handleGoogleSignIn = async () => {
     setErrors({});
     setGoogleLoading(true);
     try {
-      const { user } = await signInWithGoogle();
+      const { user: firebaseUser } = await signInWithGoogle();
+
+      // Google login token expiry handle
+      await scheduleTokenExpiry(firebaseUser);
+
       await saveAndUpdateUser({
-        name: user?.displayName,
-        email: user?.email,
-        image: user?.photoURL,
-        uid: user.uid,
+        name: firebaseUser?.displayName,
+        email: firebaseUser?.email,
+        image: firebaseUser?.photoURL,
+        uid: firebaseUser.uid,
         phone: "",
         role: "Student",
       });
       toast.success("Login successful! Welcome back.");
       navigate(from, { replace: true });
     } catch (err) {
-      console.log(err);
       setLoading(false);
       setErrors({ server: "Google sign-in failed. Please try again." });
     } finally {
@@ -115,16 +184,54 @@ const Login = () => {
     }
   };
 
+  // ── JSX ───────────────────────────────────────────────────────────────────
   return (
     <div className="flex justify-center items-center min-h-screen bg-white">
       <div className="flex flex-col w-full max-w-md p-6 sm:p-10 bg-gray-100 text-gray-900 border border-gray-600 mx-4 shadow-2xl rounded-3xl">
         {/* Header */}
-        <div className="mb-8 text-center">
+        <div className="mb-6 text-center">
           <h1 className="my-3 text-4xl font-bold">Log In</h1>
           <p className="text-sm text-gray-400">
             Sign in to access your account
           </p>
         </div>
+
+        {/* ── Demo Login Buttons ── */}
+        <div className="mb-6">
+          <p className="text-xs text-center text-slate-500 mb-3 font-semibold uppercase tracking-[0.2em]">
+            Quick Demo Access
+          </p>
+
+          <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
+            <button
+              type="button"
+              onClick={() => handleDemoFill("student")}
+              disabled={submitting || googleLoading}
+              className="group flex items-center justify-center gap-2 py-3 px-4 rounded-xl border border-blue-200 bg-gradient-to-r from-blue-50 to-blue-100 text-blue-700 font-semibold shadow-sm hover:shadow-md hover:-translate-y-0.5 hover:from-blue-100 hover:to-blue-200 transition-all duration-300 disabled:opacity-50 disabled:cursor-not-allowed"
+            >
+              <span>Student</span>
+            </button>
+
+            <button
+              type="button"
+              onClick={() => handleDemoFill("tutor")}
+              disabled={submitting || googleLoading}
+              className="group flex items-center justify-center gap-2 py-3 px-4 rounded-xl border border-emerald-200 bg-gradient-to-r from-emerald-50 to-emerald-100 text-emerald-700 font-semibold shadow-sm hover:shadow-md hover:-translate-y-0.5 hover:from-emerald-100 hover:to-emerald-200 transition-all duration-300 disabled:opacity-50 disabled:cursor-not-allowed"
+            >
+              <span>Tutor</span>
+            </button>
+
+            <button
+              type="button"
+              onClick={() => handleDemoFill("admin")}
+              disabled={submitting || googleLoading}
+              className="group flex items-center justify-center gap-2 py-3 px-4 rounded-xl border border-violet-200 bg-gradient-to-r from-violet-50 to-violet-100 text-violet-700 font-semibold shadow-sm hover:shadow-md hover:-translate-y-0.5 hover:from-violet-100 hover:to-violet-200 transition-all duration-300 disabled:opacity-50 disabled:cursor-not-allowed"
+            >
+              <span>Admin</span>
+            </button>
+          </div>
+        </div>
+        {/* ───────────────────────── */}
 
         {/* Server error banner */}
         {errors.server && (
@@ -153,15 +260,13 @@ const Login = () => {
                 name="email"
                 id="email"
                 required
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
                 placeholder="you@example.com"
                 aria-describedby={errors.email ? "email-error" : undefined}
                 aria-invalid={!!errors.email}
                 className={`w-full px-3 py-2 border rounded-md focus:outline-none focus:ring-2 bg-gray-200 text-gray-900 transition
-                  ${
-                    errors.email
-                      ? "border-red-400 focus:ring-red-300"
-                      : "border-gray-300 focus:ring-lime-400"
-                  }`}
+                  ${errors.email ? "border-red-400 focus:ring-red-300" : "border-gray-300 focus:ring-lime-400"}`}
               />
               {errors.email && (
                 <p
@@ -189,17 +294,15 @@ const Login = () => {
                   id="password"
                   autoComplete="current-password"
                   required
+                  value={password}
+                  onChange={(e) => setPassword(e.target.value)}
                   placeholder="••••••••"
                   aria-describedby={
                     errors.password ? "password-error" : undefined
                   }
                   aria-invalid={!!errors.password}
                   className={`w-full px-3 py-2 border rounded-md focus:outline-none focus:ring-2 bg-gray-200 text-gray-900 transition
-                    ${
-                      errors.password
-                        ? "border-red-400 focus:ring-red-300"
-                        : "border-gray-300 focus:ring-lime-400"
-                    }`}
+                    ${errors.password ? "border-red-400 focus:ring-red-300" : "border-gray-300 focus:ring-lime-400"}`}
                 />
                 <button
                   type="button"

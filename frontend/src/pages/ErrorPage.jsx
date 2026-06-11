@@ -11,6 +11,7 @@ const ErrorPage = () => {
         {/* 404 Image */}
         <div className="flex justify-center">
           <img
+            loading="lazy"
             src={errorImg}
             alt="404 Not Found"
             className="w-64 md:w-80 mb-6 drop-shadow-lg"

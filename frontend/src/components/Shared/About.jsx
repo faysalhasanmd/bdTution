@@ -98,29 +98,65 @@ const About = () => {
       {/* ── Stats — real backend data ── */}
       <section
         data-aos="fade-up"
-        className="bg-white dark:bg-gray-800 border-y border-gray-100 dark:border-gray-700 py-14"
+        className="bg-white dark:bg-gray-900 border-y border-gray-100 dark:border-gray-800 py-14 transition-colors duration-300"
       >
         <div className="max-w-5xl mx-auto px-6">
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-px bg-gray-100 dark:bg-gray-700 rounded-2xl overflow-hidden border border-gray-100 dark:border-gray-700">
-            {statItems.map((stat, i) => (
-              <div
-                key={i}
-                className="bg-white dark:bg-gray-800 flex flex-col items-center justify-center py-8 px-4 text-center"
-              >
-                <span
-                  className={`text-3xl font-extrabold text-blue-600 dark:text-blue-400 tabular-nums transition-all duration-500 ${
-                    !stats
-                      ? "animate-pulse text-gray-300 dark:text-gray-600"
-                      : ""
-                  }`}
+          {/* Grid Container: মাঝখানের ডিভাইডার লাইনের কালার */}
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-px bg-gray-100 dark:bg-gray-800 rounded-3xl overflow-hidden border border-gray-100 dark:border-gray-800 shadow-xs">
+            {statItems.map((stat, i) => {
+              // ৪টি বক্সের আলাদা আলাদা স্মুথ কালার ম্যাপ
+              const boxColors = [
+                {
+                  bg: "bg-blue-50/40 dark:bg-blue-950/10 hover:bg-blue-50/80 dark:hover:bg-blue-950/20",
+                  text: "text-blue-600 dark:text-blue-400",
+                  pulse:
+                    "from-blue-200 to-blue-300 dark:from-blue-900 dark:to-blue-800",
+                },
+                {
+                  bg: "bg-violet-50/40 dark:bg-violet-950/10 hover:bg-violet-50/80 dark:hover:bg-violet-950/20",
+                  text: "text-violet-600 dark:text-violet-400",
+                  pulse:
+                    "from-violet-200 to-violet-300 dark:from-violet-900 dark:to-violet-800",
+                },
+                {
+                  bg: "bg-emerald-50/40 dark:bg-emerald-950/10 hover:bg-emerald-50/80 dark:hover:bg-emerald-950/20",
+                  text: "text-emerald-600 dark:text-emerald-400",
+                  pulse:
+                    "from-emerald-200 to-emerald-300 dark:from-emerald-900 dark:to-emerald-800",
+                },
+                {
+                  bg: "bg-amber-50/40 dark:bg-amber-950/10 hover:bg-amber-50/80 dark:hover:bg-amber-950/20",
+                  text: "text-amber-600 dark:text-amber-400",
+                  pulse:
+                    "from-amber-200 to-amber-300 dark:from-amber-900 dark:to-amber-800",
+                },
+              ];
+
+              const c = boxColors[i % boxColors.length];
+
+              return (
+                <div
+                  key={i}
+                  className={`${c.bg} flex flex-col items-center justify-center py-10 px-4 text-center transition-all duration-300 group`}
                 >
-                  {stat.value}
-                </span>
-                <p className="text-xs text-gray-400 dark:text-gray-500 mt-2 font-medium">
-                  {stat.label}
-                </p>
-              </div>
-            ))}
+                  {/* Stat Value */}
+                  <span
+                    className={`text-3xl md:text-4xl font-black tracking-tight tabular-nums transition-all duration-500 ${c.text} ${
+                      !stats
+                        ? `animate-pulse bg-clip-text text-transparent bg-gradient-to-r ${c.pulse}`
+                        : ""
+                    }`}
+                  >
+                    {stat.value}
+                  </span>
+
+                  {/* Stat Label */}
+                  <p className="text-xs text-gray-400 dark:text-gray-500 mt-2.5 font-bold tracking-wide uppercase transition-colors duration-300 group-hover:text-gray-600 dark:group-hover:text-gray-400">
+                    {stat.label}
+                  </p>
+                </div>
+              );
+            })}
           </div>
         </div>
       </section>

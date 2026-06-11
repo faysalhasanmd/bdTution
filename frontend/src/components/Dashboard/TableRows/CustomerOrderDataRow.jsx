@@ -32,7 +32,7 @@ const CustomerOrderDataRow = ({ item, refetch }) => {
   return (
     <tr>
       <td className="px-5 py-5  bg-white">
-        <img src={item.image} className="h-12 w-12 rounded" />
+        <img loading="lazy" src={item.image} className="h-12 w-12 rounded" />
       </td>
 
       <td className="px-5 py-5 border-b bg-white">{item.studentName}</td>

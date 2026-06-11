@@ -1,146 +1,202 @@
-import { motion } from "framer-motion";
-import { FaEnvelope, FaPhoneAlt, FaMapMarkerAlt } from "react-icons/fa";
-import { FiSend } from "react-icons/fi";
-import Swal from "sweetalert2";
+import { useForm } from "react-hook-form";
+import { useState } from "react";
+import toast from "react-hot-toast";
+import { FiMail, FiMapPin, FiPhone, FiSend } from "react-icons/fi";
+import { TbFidgetSpinner } from "react-icons/tb";
 
 const Contact = () => {
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    Swal.fire({
-      title: "Message Sent Successfully",
-      text: "We will get back to you soon.",
-      icon: "success",
-      confirmButtonColor: "#6366f1",
-    });
-    e.target.reset();
+  const [submitting, setSubmitting] = useState(false);
+
+  const {
+    register,
+    handleSubmit,
+    reset,
+    formState: { errors },
+  } = useForm();
+
+  const onSubmit = async (data) => {
+    setSubmitting(true);
+    try {
+      const response = await fetch(`${import.meta.env.VITE_API_URL}/contact`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          ...data,
+          submittedAt: new Date().toISOString(),
+        }),
+      });
+
+      if (!response.ok) throw new Error("Failed");
+
+      toast.success("Message sent successfully! We'll get back to you soon ✅");
+      reset();
+    } catch (error) {
+      console.error(error);
+      toast.error("Failed to send message. Please try again ❌");
+    } finally {
+      setSubmitting(false);
+    }
   };
 
   return (
-    <div className="bg-white dark:bg-gray-900 text-gray-800 dark:text-gray-100 min-h-screen">
-      {/* Hero */}
-      <div className="bg-gray-100 dark:bg-gray-800 text-center py-20 px-6">
-        <motion.h1
-          initial={{ opacity: 0, y: -20 }}
-          animate={{ opacity: 1, y: 0 }}
-          className="text-4xl md:text-5xl font-bold tracking-tight text-indigo-500 dark:text-indigo-400"
-        >
-          Get in Touch with Us
-        </motion.h1>
-
-        <p className="mt-4 max-w-2xl mx-auto text-gray-600 dark:text-gray-400 text-base md:text-lg leading-relaxed">
-          Have questions, feedback, or need support? Our team is always ready to
-          help you and respond within a short time.
-        </p>
-
-        <div className="mt-6 flex justify-center">
-          <div className="w-20 h-[3px] bg-gradient-to-r from-blue-600 to-indigo-600 rounded-full"></div>
-        </div>
-      </div>
-
-      {/* Main Section */}
-      <div className="max-w-6xl mx-auto px-6 py-10 grid md:grid-cols-2 gap-12 items-center">
-        {/* Contact Info */}
-        <motion.div
-          initial={{ opacity: 0, x: -30 }}
-          animate={{ opacity: 1, x: 0 }}
-          className="space-y-8"
-        >
-          <h2 className="text-3xl font-bold text-indigo-600 dark:text-indigo-400">
-            Contact Information
-          </h2>
-
-          <p className="text-gray-600 dark:text-gray-400 leading-relaxed">
-            Feel free to contact us for any support, feedback, or business
-            inquiries.
+    <div className="bg-gray-50 dark:bg-gray-900 px-4">
+      <div className="max-w-5xl mx-auto space-y-10">
+        {/* Header */}
+        <div className="text-center space-y-3">
+          <h1 className="text-4xl font-bold text-gray-800 p-5 dark:text-white">
+            Contact <span className="text-lime-500">Us</span>
+          </h1>
+          <p className="text-gray-500 dark:text-gray-400 max-w-xl mx-auto text-sm">
+            Have a question or need help? Fill out the form and our team will
+            respond within 24 hours.
           </p>
+        </div>
 
-          <div className="space-y-5">
-            <div className="flex items-center gap-4 bg-white dark:bg-gray-800 p-5 rounded-xl border border-gray-200 dark:border-gray-700">
-              <FaEnvelope className="text-blue-600 dark:text-blue-400 text-xl shrink-0" />
-              <p className="text-gray-700 dark:text-gray-300">
-                support@etuitionbd.com
-              </p>
-            </div>
-
-            <div className="flex items-center gap-4 bg-white dark:bg-gray-800 p-5 rounded-xl border border-gray-200 dark:border-gray-700">
-              <FaPhoneAlt className="text-green-600 dark:text-green-400 text-xl shrink-0" />
-              <p className="text-gray-700 dark:text-gray-300">
-                +880 1234 567890
-              </p>
-            </div>
-
-            <div className="flex items-center gap-4 bg-white dark:bg-gray-800 p-5 rounded-xl border border-gray-200 dark:border-gray-700">
-              <FaMapMarkerAlt className="text-red-500 dark:text-red-400 text-xl shrink-0" />
-              <p className="text-gray-700 dark:text-gray-300">
-                Dhaka, Bangladesh
-              </p>
-            </div>
+        <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+          {/* Info Cards */}
+          <div className="space-y-4">
+            {[
+              {
+                icon: <FiMail className="text-lime-500" size={20} />,
+                label: "Email",
+                value: "faysalhasanmd393@gmail.com",
+              },
+              {
+                icon: <FiPhone className="text-lime-500" size={20} />,
+                label: "Phone",
+                value: "+880 1798484639",
+              },
+              {
+                icon: <FiMapPin className="text-lime-500" size={20} />,
+                label: "Address",
+                value: "Dhaka, Bangladesh",
+              },
+            ].map((info) => (
+              <div
+                key={info.label}
+                className="bg-white dark:bg-gray-800 rounded-2xl border border-gray-100 dark:border-gray-700 p-5 flex items-start gap-4"
+              >
+                <div className="w-10 h-10 bg-lime-50 dark:bg-lime-900/20 rounded-xl flex items-center justify-center shrink-0">
+                  {info.icon}
+                </div>
+                <div>
+                  <p className="text-xs font-bold uppercase text-gray-400 dark:text-gray-500 tracking-wider">
+                    {info.label}
+                  </p>
+                  <p className="text-sm text-gray-700 dark:text-gray-200 mt-0.5">
+                    {info.value}
+                  </p>
+                </div>
+              </div>
+            ))}
           </div>
-        </motion.div>
 
-        {/* Contact Form */}
-        <motion.div
-          initial={{ opacity: 0, x: 30 }}
-          animate={{ opacity: 1, x: 0 }}
-          className="bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 shadow-xl rounded-3xl p-10"
-        >
-          <h2 className="text-2xl font-bold mb-6 text-center text-indigo-600 dark:text-indigo-400">
-            Send a Message
-          </h2>
+          {/* Form */}
+          <div className="lg:col-span-2 bg-white dark:bg-gray-800 rounded-2xl border border-gray-100 dark:border-gray-700 p-8">
+            <form onSubmit={handleSubmit(onSubmit)} className="space-y-5">
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
+                {/* Name */}
+                <div className="space-y-1.5">
+                  <label className="text-xs font-bold uppercase text-gray-500 dark:text-gray-400 tracking-wider">
+                    Full Name
+                  </label>
+                  <input
+                    type="text"
+                    placeholder="Your Name"
+                    {...register("name", { required: "Name is required" })}
+                    className="w-full px-4 py-3 rounded-xl border border-gray-200 dark:border-gray-600 bg-gray-50 dark:bg-gray-700 text-gray-900 dark:text-gray-100 text-sm focus:outline-none focus:ring-2 focus:ring-lime-500/20 focus:border-lime-500 transition"
+                  />
+                  {errors.name && (
+                    <p className="text-red-500 text-xs">
+                      {errors.name.message}
+                    </p>
+                  )}
+                </div>
 
-          <form onSubmit={handleSubmit} className="space-y-5">
-            <input
-              type="text"
-              placeholder="Your Name"
-              required
-              className="w-full px-4 py-3 rounded-xl
-                border border-gray-200 dark:border-gray-600
-                bg-white dark:bg-gray-700
-                text-gray-900 dark:text-gray-100
-                placeholder-gray-400 dark:placeholder-gray-500
-                focus:ring-2 focus:ring-indigo-500 outline-none"
-            />
+                {/* Email */}
+                <div className="space-y-1.5">
+                  <label className="text-xs font-bold uppercase text-gray-500 dark:text-gray-400 tracking-wider">
+                    Email Address
+                  </label>
+                  <input
+                    type="email"
+                    placeholder="you@example.com"
+                    {...register("email", {
+                      required: "Email is required",
+                      pattern: {
+                        value: /^\S+@\S+\.\S+$/,
+                        message: "Enter a valid email",
+                      },
+                    })}
+                    className="w-full px-4 py-3 rounded-xl border border-gray-200 dark:border-gray-600 bg-gray-50 dark:bg-gray-700 text-gray-900 dark:text-gray-100 text-sm focus:outline-none focus:ring-2 focus:ring-lime-500/20 focus:border-lime-500 transition"
+                  />
+                  {errors.email && (
+                    <p className="text-red-500 text-xs">
+                      {errors.email.message}
+                    </p>
+                  )}
+                </div>
+              </div>
 
-            <input
-              type="email"
-              placeholder="Your Email"
-              required
-              className="w-full px-4 py-3 rounded-xl
-                border border-gray-200 dark:border-gray-600
-                bg-white dark:bg-gray-700
-                text-gray-900 dark:text-gray-100
-                placeholder-gray-400 dark:placeholder-gray-500
-                focus:ring-2 focus:ring-indigo-500 outline-none"
-            />
+              {/* Subject */}
+              <div className="space-y-1.5">
+                <label className="text-xs font-bold uppercase text-gray-500 dark:text-gray-400 tracking-wider">
+                  Subject
+                </label>
+                <input
+                  type="text"
+                  placeholder="How can we help you?"
+                  {...register("subject", { required: "Subject is required" })}
+                  className="w-full px-4 py-3 rounded-xl border border-gray-200 dark:border-gray-600 bg-gray-50 dark:bg-gray-700 text-gray-900 dark:text-gray-100 text-sm focus:outline-none focus:ring-2 focus:ring-lime-500/20 focus:border-lime-500 transition"
+                />
+                {errors.subject && (
+                  <p className="text-red-500 text-xs">
+                    {errors.subject.message}
+                  </p>
+                )}
+              </div>
 
-            <textarea
-              placeholder="Your Message"
-              required
-              className="w-full px-4 py-3 rounded-xl h-32
-                border border-gray-200 dark:border-gray-600
-                bg-white dark:bg-gray-700
-                text-gray-900 dark:text-gray-100
-                placeholder-gray-400 dark:placeholder-gray-500
-                focus:ring-2 focus:ring-indigo-500 outline-none"
-            />
+              {/* Message */}
+              <div className="space-y-1.5">
+                <label className="text-xs font-bold uppercase text-gray-500 dark:text-gray-400 tracking-wider">
+                  Message
+                </label>
+                <textarea
+                  rows={5}
+                  placeholder="Write your message here..."
+                  {...register("message", {
+                    required: "Message is required",
+                    minLength: { value: 20, message: "Minimum 20 characters" },
+                  })}
+                  className="w-full px-4 py-3 rounded-xl border border-gray-200 dark:border-gray-600 bg-gray-50 dark:bg-gray-700 text-gray-900 dark:text-gray-100 text-sm focus:outline-none focus:ring-2 focus:ring-lime-500/20 focus:border-lime-500 transition resize-none"
+                />
+                {errors.message && (
+                  <p className="text-red-500 text-xs">
+                    {errors.message.message}
+                  </p>
+                )}
+              </div>
 
-            <button
-              type="submit"
-              className="w-full flex items-center justify-center gap-2
-                bg-gradient-to-r from-blue-600 to-indigo-600
-                hover:from-blue-700 hover:to-indigo-700
-                text-white py-3 rounded-xl font-semibold shadow-md
-                hover:scale-105 active:scale-95 transition"
-            >
-              Send Message <FiSend />
-            </button>
-          </form>
-        </motion.div>
-      </div>
-
-      {/* Footer */}
-      <div className="text-center py-6 text-gray-500 dark:text-gray-400 text-sm">
-        Built with care by Md Faysal Hasan
+              <button
+                type="submit"
+                disabled={submitting}
+                className="w-full py-3 bg-lime-500 text-white font-semibold rounded-xl hover:bg-lime-600 disabled:opacity-60 disabled:cursor-not-allowed transition-colors flex justify-center items-center gap-2"
+              >
+                {submitting ? (
+                  <>
+                    <TbFidgetSpinner className="animate-spin text-lg" />
+                    Sending...
+                  </>
+                ) : (
+                  <>
+                    <FiSend size={16} />
+                    Send Message
+                  </>
+                )}
+              </button>
+            </form>
+          </div>
+        </div>
       </div>
     </div>
   );

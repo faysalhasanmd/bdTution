@@ -59,6 +59,7 @@ const Tutor = () => {
             className="bg-white rounded-2xl shadow-md hover:shadow-xl transition duration-300 p-6 text-center"
           >
             <img
+              loading="lazy"
               src={tutor.image || "https://i.ibb.co/4pDNDk1/avatar.png"}
               alt={tutor.name}
               className="w-24 h-24 mx-auto rounded-full object-cover border-4 border-primary"

@@ -22,6 +22,7 @@ const Card = ({ item }) => {
       <div className="relative w-full h-48 overflow-hidden bg-gray-100">
         {item.image ? (
           <img
+            loading="lazy"
             src={item.image}
             alt={item.subject || "Tuition"}
             className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-300"

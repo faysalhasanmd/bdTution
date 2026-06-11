@@ -4,7 +4,7 @@ import { MdOutlineWorkHistory } from "react-icons/md";
 import MenuItem from "./MenuItem";
 import { TbReportMoney } from "react-icons/tb";
 
-const SellerMenu = () => {
+const TutorMenu = () => {
   return (
     <>
       <MenuItem
@@ -31,4 +31,4 @@ const SellerMenu = () => {
   );
 };
 
-export default SellerMenu;
+export default TutorMenu;

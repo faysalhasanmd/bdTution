@@ -51,6 +51,7 @@ const TutorProfile = () => {
           </button>
 
           <img
+            loading="lazy"
             src={tutor.image || "https://i.ibb.co/4pDNDk1/avatar.png"}
             alt={tutor.name}
             className="w-32 h-32 mx-auto rounded-full border-4 border-white shadow-md object-cover"

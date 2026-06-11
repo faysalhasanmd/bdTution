@@ -323,7 +323,7 @@ const SignUp = () => {
             >
               I agree to the{" "}
               <Link
-                to="/terms"
+                to="/privacy-policy"
                 className="text-lime-500 hover:underline font-medium"
                 target="_blank"
                 rel="noopener noreferrer"
@@ -332,7 +332,7 @@ const SignUp = () => {
               </Link>{" "}
               and{" "}
               <Link
-                to="/privacy"
+                to="/privacy-policy"
                 className="text-lime-500 hover:underline font-medium"
                 target="_blank"
                 rel="noopener noreferrer"

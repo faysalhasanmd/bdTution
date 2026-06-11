@@ -9,6 +9,7 @@ import logo from "../../../assets/images/bd-tuition.png";
 import { GiHamburgerMenu } from "react-icons/gi";
 import { HiSun, HiMoon } from "react-icons/hi";
 import { useTheme } from "../../../context/ThemeContext";
+import { useNavigate } from "react-router"; // অথবা "react-router-dom"
 
 const Navbar = ({ sidebarOpen, onSidebarToggle }) => {
   const { user, logOut, role } = useAuth();
@@ -17,6 +18,7 @@ const Navbar = ({ sidebarOpen, onSidebarToggle }) => {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const dropdownRef = useRef(null);
   const location = useLocation();
+  const navigate = useNavigate();
 
   useEffect(() => {
     setMobileMenuOpen(false);
@@ -91,7 +93,7 @@ const Navbar = ({ sidebarOpen, onSidebarToggle }) => {
 
             {/* Desktop Nav */}
             <div className="hidden lg:flex items-center gap-6 font-medium text-sm">
-              {/* Logged OUT: Home, Explore, About, Login */}
+              {/* Logged OUT: Home, Explore, About, Contact, Login */}
               {!user && (
                 <>
                   <NavLink to="/" className={navLinkClass}>
@@ -103,13 +105,16 @@ const Navbar = ({ sidebarOpen, onSidebarToggle }) => {
                   <NavLink to="/about" className={navLinkClass}>
                     About
                   </NavLink>
+                  <NavLink to="/contact" className={navLinkClass}>
+                    Contact
+                  </NavLink>
                   <NavLink to="/login" className={navLinkClass}>
                     Login
                   </NavLink>
                 </>
               )}
 
-              {/* Logged IN: Home, Explore, Dashboard, Blog */}
+              {/* Logged IN: Home, Explore, Dashboard, Blog, Contact, About */}
               {user && (
                 <>
                   <NavLink to="/" className={navLinkClass}>
@@ -121,8 +126,14 @@ const Navbar = ({ sidebarOpen, onSidebarToggle }) => {
                   <NavLink to="/dashboard" className={navLinkClass}>
                     Dashboard
                   </NavLink>
-                  <NavLink to="/blog" className={navLinkClass}>
+                  <NavLink to="/blogs" className={navLinkClass}>
                     Blog
+                  </NavLink>
+                  <NavLink to="/contact" className={navLinkClass}>
+                    Contact
+                  </NavLink>
+                  <NavLink to="/about" className={navLinkClass}>
+                    About
                   </NavLink>
                 </>
               )}
@@ -131,12 +142,32 @@ const Navbar = ({ sidebarOpen, onSidebarToggle }) => {
             {/* Right — dark mode + avatar dropdown + mobile menu btn */}
             <div className="flex items-center gap-2">
               {/* Dark mode toggle */}
+              {/* Dark mode toggle */}
               <button
                 onClick={toggleTheme}
                 aria-label="Toggle dark mode"
-                className="p-2 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-800 transition text-gray-600 dark:text-gray-300"
+                className={`relative flex items-center w-[52px] h-[22px] rounded-full p-0.5 transition-all duration-300 focus:outline-none focus:ring-2 focus:ring-offset-2
+                ${
+                  darkMode
+                    ? "bg-gray-700 focus:ring-blue-500 focus:ring-offset-gray-900"
+                    : "bg-gray-200 focus:ring-blue-400 focus:ring-offset-white"
+                }`}
               >
-                {darkMode ? <HiSun size={20} /> : <HiMoon size={20} />}
+                {/* sliding circle */}
+                <span
+                  className={`flex items-center justify-center w-[22px] h-[22px] rounded-full shadow-md transition-all duration-300
+                   ${
+                     darkMode
+                       ? "translate-x-[26px] bg-gray-900"
+                       : "translate-x-0 bg-white"
+                   }`}
+                >
+                  {darkMode ? (
+                    <HiSun size={13} className="text-yellow-400" />
+                  ) : (
+                    <HiMoon size={13} className="text-gray-500" />
+                  )}
+                </span>
               </button>
 
               {/* Avatar / Profile Dropdown */}
@@ -150,6 +181,7 @@ const Navbar = ({ sidebarOpen, onSidebarToggle }) => {
                     className="text-gray-500 dark:text-gray-400"
                   />
                   <img
+                    loading="lazy"
                     className="w-8 h-8 rounded-full object-cover"
                     src={user?.photoURL || avatarImg}
                     referrerPolicy="no-referrer"
@@ -176,7 +208,6 @@ const Navbar = ({ sidebarOpen, onSidebarToggle }) => {
 
                     <div className="flex flex-col py-1">
                       {!user ? (
-                        /* Logged OUT dropdown */
                         <>
                           <NavLink
                             to="/login"
@@ -194,7 +225,6 @@ const Navbar = ({ sidebarOpen, onSidebarToggle }) => {
                           </NavLink>
                         </>
                       ) : (
-                        /* Logged IN dropdown — Profile, Dashboard, Settings, Logout */
                         <>
                           <NavLink
                             to="/dashboard/profile"
@@ -219,11 +249,16 @@ const Navbar = ({ sidebarOpen, onSidebarToggle }) => {
                           </NavLink>
                           <div className="border-t border-gray-100 dark:border-gray-700 mt-1" />
                           <button
-                            onClick={() => {
-                              logOut();
-                              setIsOpen(false);
+                            onClick={async () => {
+                              try {
+                                await logOut();
+                                setIsOpen(false);
+                                navigate("/login");
+                              } catch (error) {
+                                console.error("Logout failed:", error);
+                              }
                             }}
-                            className="text-left px-4 py-2.5 hover:bg-red-50 dark:hover:bg-red-900/20 text-red-500 transition"
+                            className="text-left px-4 py-2.5 hover:bg-red-50 dark:hover:bg-red-900/20 text-red-500 transition w-full"
                           >
                             Logout
                           </button>
@@ -234,7 +269,7 @@ const Navbar = ({ sidebarOpen, onSidebarToggle }) => {
                 )}
               </div>
 
-              {/* Mobile menu button */}
+              {/* Mobile menu button — only show when logged out, or logged in without sidebar */}
               <button
                 onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
                 className="lg:hidden p-2 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-800 transition text-gray-800 dark:text-gray-200"
@@ -257,14 +292,14 @@ const Navbar = ({ sidebarOpen, onSidebarToggle }) => {
         </Container>
       </div>
 
-      {/* Mobile nav */}
+      {/* Mobile Nav */}
       <div
         className={`lg:hidden overflow-hidden transition-all duration-300 ease-in-out ${
           mobileMenuOpen ? "max-h-screen opacity-100" : "max-h-0 opacity-0"
         } bg-white dark:bg-gray-900 border-t border-gray-100 dark:border-gray-700 shadow-md`}
       >
         <nav className="flex flex-col text-sm font-medium">
-          {/* Logged OUT mobile: Home, Explore, About, Login */}
+          {/* Logged OUT mobile */}
           {!user && (
             <>
               <NavLink
@@ -289,6 +324,13 @@ const Navbar = ({ sidebarOpen, onSidebarToggle }) => {
                 About
               </NavLink>
               <NavLink
+                to="/contact"
+                className={mobileNavLinkClass}
+                onClick={() => setMobileMenuOpen(false)}
+              >
+                Contact
+              </NavLink>
+              <NavLink
                 to="/login"
                 className={mobileNavLinkClass}
                 onClick={() => setMobileMenuOpen(false)}
@@ -305,7 +347,7 @@ const Navbar = ({ sidebarOpen, onSidebarToggle }) => {
             </>
           )}
 
-          {/* Logged IN mobile: Home, Explore, Dashboard, Blog, Profile, Logout */}
+          {/* Logged IN mobile */}
           {user && (
             <>
               <NavLink
@@ -330,11 +372,25 @@ const Navbar = ({ sidebarOpen, onSidebarToggle }) => {
                 Dashboard
               </NavLink>
               <NavLink
-                to="/blog"
+                to="/blogs"
                 className={mobileNavLinkClass}
                 onClick={() => setMobileMenuOpen(false)}
               >
                 Blog
+              </NavLink>
+              <NavLink
+                to="/contact"
+                className={mobileNavLinkClass}
+                onClick={() => setMobileMenuOpen(false)}
+              >
+                Contact
+              </NavLink>
+              <NavLink
+                to="/about"
+                className={mobileNavLinkClass}
+                onClick={() => setMobileMenuOpen(false)}
+              >
+                About
               </NavLink>
               <NavLink
                 to="/dashboard/profile"

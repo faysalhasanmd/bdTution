@@ -634,8 +634,8 @@ const Home = () => {
       <section data-aos="fade-up" className="mt-10">
         <SectionHeader
           badge="Top Rated"
-          title="Top Tutors Available"
-          subtitle="Explore our verified tutors and find your perfect match."
+          title="Meet Our Expert Tutors"
+          subtitle="Find the perfect companion for your educational journey. Private instruction tailored completely to your needs.."
         />
         <div className="bg-gray-50 dark:bg-gray-900 border-b border-gray-100 dark:border-gray-700 py-14">
           <div className="mx-auto px-6">
@@ -688,7 +688,6 @@ const Home = () => {
         <About />
       </section>
 
-      {/* 15. Call To Action — সবার শেষে */}
       <div data-aos="fade-up">
         <CallToActionSection />
       </div>

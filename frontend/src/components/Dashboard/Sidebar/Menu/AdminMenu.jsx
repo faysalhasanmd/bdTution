@@ -1,6 +1,8 @@
 import { FaUserCog } from "react-icons/fa";
 import { MdOutlineManageHistory } from "react-icons/md";
 import { FcStatistics } from "react-icons/fc";
+import { CgProfile } from "react-icons/cg";
+
 import { TbReportAnalytics } from "react-icons/tb";
 
 import MenuItem from "./MenuItem";
@@ -23,6 +25,11 @@ const AdminMenu = () => {
         icon={TbReportAnalytics}
         label="Reports & Analytics"
         address="reports-analytics"
+      />
+      <MenuItem
+        icon={CgProfile}
+        label="Profile Setting"
+        address="profile-setting"
       />
     </>
   );

@@ -20,6 +20,7 @@ const PlantDataRow = () => {
           <div className="shrink-0">
             <div className="block relative">
               <img
+                loading="lazy"
                 alt="profile"
                 src="https://i.ibb.co.com/rMHmQP2/money-plant-in-feng-shui-brings-luck.jpg"
                 className="mx-auto object-cover rounded h-10 w-15 "

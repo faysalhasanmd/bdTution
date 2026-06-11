@@ -502,7 +502,7 @@ const TutorStatistics = () => {
   }
 
   return (
-    <div className="min-h-screen bg-gray-50 dark:bg-gray-900 px-4 sm:px-6 lg:px-10 py-10">
+    <div className="min-h-screen mt-3 bg-gray-50 dark:bg-gray-900 px-4 sm:px-6 lg:px-10 py-10">
       {/* Header */}
       <div className="mb-8">
         <h1 className="text-3xl font-extrabold text-gray-900 dark:text-white">
