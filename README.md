@@ -1,9 +1,38 @@
 # eTuitionBd – Tuition Management System
 
-## Live Links
+> A full-stack MERN-based platform that seamlessly connects **students** with **qualified tutors** — with secure payments, role-based dashboards, and admin control.
 
-- **Live Site:** https://preeminent-mermaid-04ba7b.netlify.app/
-- **Github Repo:** https://github.com/faysalhasanmd/bdTution
+---
+
+## Live Links & Demo Credentials
+
+| Platform    | Link                                                                                    |
+| ----------- | --------------------------------------------------------------------------------------- |
+| Live Site   | [preeminent-mermaid-04ba7b.netlify.app](https://preeminent-mermaid-04ba7b.netlify.app/) |
+| GitHub Repo | [github.com/faysalhasanmd/bdTution](https://github.com/faysalhasanmd/bdTution)          |
+
+> **These credentials are for demo/testing purposes only.**
+
+### Student Account
+
+| Field    | Value                |
+| -------- | -------------------- |
+| Email    | `alumarka@gmail.com` |
+| Password | `aluMarka1234$`      |
+
+### Tutor Account
+
+| Field    | Value                        |
+| -------- | ---------------------------- |
+| Email    | `faysalhasanmd393@gmail.com` |
+| Password | `Faysal12345$`               |
+
+### Admin Account
+
+| Field    | Value               |
+| -------- | ------------------- |
+| Email    | `Jamsher@gmail.com` |
+| Password | `Jamsher1234$`      |
 
 ---
 
@@ -11,13 +40,13 @@
 
 **eTuitionBd** is a MERN-stack Tuition Management System that connects students with qualified tutors in a structured and secure way.
 
-### Why this project?
+### Why This Project?
 
 - Solve the problem of finding **trusted tutors**
 - Provide a **centralized tuition platform**
 - Reduce communication gap between student & tutor
-- Enable **secure payment system**
-- Help admin **monitor & control platform activities**
+- Enable a **secure payment system**
+- Help admin **monitor & control** platform activities
 
 ---
 
@@ -25,16 +54,16 @@
 
 ### Student Features
 
-- Create, update, delete tuition posts
-- View tutor applications
-- Accept / Reject tutor
-- Stripe payment for hiring tutor
+- Create, update, and delete tuition posts
+- View and manage tutor applications
+- Accept / Reject tutors
+- Stripe payment for hiring a tutor
 - View payment history
 
 ### Tutor Features
 
-- Browse tuition posts
-- Apply for tuition
+- Browse available tuition posts
+- Apply for tuitions
 - Track application status
 - View ongoing (approved) tuitions
 - Revenue history
@@ -53,11 +82,11 @@
 - Firebase Authentication (Email + Password + Google Login)
 - JWT Token-based Authorization
 - Role-based access control (Admin / Tutor / Student)
-- Protected routes (No redirect issue after reload)
-- Secure environment variables (.env)
-  - Firebase keys
-  - MongoDB URI
-  - JWT secret
+- Protected routes (no redirect issue after reload)
+- Secure environment variables (`.env`)
+- Firebase keys
+- MongoDB URI
+- JWT secret
 
 ---
 
@@ -100,15 +129,21 @@
 
 ## System Workflow
 
-1. Student posts tuition → Status: **Pending**
-2. Admin approves → Status: **Approved**
-3. Tutors apply for tuition
-4. Student selects tutor → Payment via Stripe
-5. Tutor becomes **Approved**
+```
+Student posts tuition → Status: Pending
+↓
+Admin approves → Status: Approved
+↓
+Tutors apply for tuition
+↓
+Student selects tutor → Payment via Stripe
+↓
+Tutor becomes Approved
+```
 
 ---
 
-## Advanced Features (Challenge Part)
+## Advanced Features
 
 - Search by subject & location
 - Sort by budget & date
@@ -133,42 +168,48 @@
 
 ### Frontend
 
-- React.js
-- React Router
-- Tailwind CSS
-- DaisyUI
-- Framer Motion
-- Axios
-- AOS
-- React Hook Form
-- Chart.js / Recharts
+| Package             | Purpose             |
+| ------------------- | ------------------- |
+| React.js            | UI Framework        |
+| React Router        | Client-side routing |
+| Tailwind CSS        | Styling             |
+| DaisyUI             | UI Components       |
+| Framer Motion       | Animations          |
+| Axios               | HTTP requests       |
+| AOS                 | Scroll animations   |
+| React Hook Form     | Form handling       |
+| Chart.js / Recharts | Data visualization  |
 
 ### Backend
 
-- Node.js
-- Express.js
-- MongoDB
-- JWT (jsonwebtoken)
-- Stripe API
-- CORS
-- dotenv
+| Package    | Purpose               |
+| ---------- | --------------------- |
+| Node.js    | Runtime               |
+| Express.js | Server framework      |
+| MongoDB    | Database              |
+| JWT        | Authorization         |
+| Stripe API | Payment processing    |
+| CORS       | Cross-origin support  |
+| dotenv     | Environment variables |
 
 ### Authentication
 
-- Firebase
+| Service  | Purpose                        |
+| -------- | ------------------------------ |
+| Firebase | Auth (Email, Password, Google) |
 
 ---
 
 ## Installation & Setup
 
-### 1️ Clone the repository
+### 1 Clone the Repository
 
 ```bash
 git clone https://github.com/faysalhasanmd/bdTution
 cd bdTution
 ```
 
-### 2️ Install dependencies
+### 2 Install Dependencies
 
 ```bash
 # Frontend
@@ -180,26 +221,26 @@ cd ../backend
 npm install
 ```
 
-### 3️ Environment Variables
+### 3 Environment Variables
 
-Frontend `.env`:
+**Frontend `.env`:**
 
-```
+```env
 VITE_API_URL=https://bdtutionsf.vercel.app
 VITE_FIREBASE_API_KEY=your_key
 VITE_FIREBASE_AUTH_DOMAIN=your_domain
 ```
 
-Backend `.env`:
+**Backend `.env`:**
 
-```
+```env
 MONGODB_URI=your_mongodb_uri
 STRIPE_SECRETE_KEY=your_stripe_key
 FB_SERVICE_KEY=your_firebase_base64_key
 PORT=3000
 ```
 
-### 4️ Run locally
+### 4 Run Locally
 
 ```bash
 # Backend
@@ -210,3 +251,9 @@ npm start
 cd frontend
 npm run dev
 ```
+
+---
+
+<div align="center">
+Made with by <a href="https://github.com/faysalhasanmd">Faysal Hasan</a>
+</div>
