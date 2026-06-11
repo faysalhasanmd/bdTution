@@ -63,7 +63,7 @@ const HeroSection = () => {
 
   // Fetch approved tuitions — reuse for slideshow + search
   useEffect(() => {
-    fetch("https://bdtuitions.vercel.app/tuition?status=Approved")
+    fetch("https://bdtutionsf.vercel.app/tuition?status=Approved")
       .then((res) => res.json())
       .then((data) => {
         setAllTuitions(data);
@@ -75,7 +75,7 @@ const HeroSection = () => {
 
   // Fetch stats
   useEffect(() => {
-    fetch("https://bdtuitions.vercel.app/admin/dashboard-stats")
+    fetch("https://bdtutionsf.vercel.app/admin/dashboard-stats")
       .then((res) => res.json())
       .then(setStats)
       .catch(console.error);

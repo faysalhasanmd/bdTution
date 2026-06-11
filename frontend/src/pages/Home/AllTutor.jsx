@@ -8,7 +8,7 @@ const AllTutor = () => {
 
   useEffect(() => {
     axios
-      .get("https://bdtuitions.vercel.app/users/tutors")
+      .get("https://bdtutionsf.vercel.app/users/tutors")
       .then((res) => setTutors(res.data))
       .catch((err) => console.log(err));
   }, []);

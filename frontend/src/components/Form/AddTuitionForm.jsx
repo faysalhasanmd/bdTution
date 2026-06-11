@@ -35,7 +35,7 @@ const AddTuitionForm = () => {
       };
 
       const res = await axios.post(
-        `https://bdtuitions.vercel.app/tuition`,
+        `https://bdtutionsf.vercel.app/tuition`,
         tuitionData,
       );
 

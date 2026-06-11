@@ -163,7 +163,7 @@ const AllTuitions = () => {
 
   useEffect(() => {
     axios
-      .get("https://bdtuitions.vercel.app/tuition?status=Approved")
+      .get("https://bdtutionsf.vercel.app/tuition?status=Approved")
       .then((res) => {
         setTuitions(res.data);
         setLoading(false);

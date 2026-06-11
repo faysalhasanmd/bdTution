@@ -189,7 +189,7 @@ const LatestTutorsSection = () => {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    fetch("https://bdtuitions.vercel.app/users/latest-tutors")
+    fetch("https://bdtutionsf.vercel.app/users/latest-tutors")
       .then((res) => res.json())
       .then((data) => {
         setTutors(data);

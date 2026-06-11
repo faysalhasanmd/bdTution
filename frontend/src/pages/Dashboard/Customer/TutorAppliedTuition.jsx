@@ -19,7 +19,7 @@ const TutorAppliedTuition = () => {
   useEffect(() => {
     if (!userEmail) return;
     setLoading(true);
-    fetch(`https://bdtuitions.vercel.app/applications/student/${userEmail}`)
+    fetch(`https://bdtutionsf.vercel.app/applications/student/${userEmail}`)
       .then((res) => res.json())
       .then((data) => {
         setApplications(data.reverse());
@@ -34,7 +34,7 @@ const TutorAppliedTuition = () => {
   const handleStatusChange = async (id, newStatus) => {
     try {
       const res = await fetch(
-        `https://bdtuitions.vercel.app/applications/${id}`,
+        `https://bdtutionsf.vercel.app/applications/${id}`,
         {
           method: "PATCH",
           headers: { "Content-Type": "application/json" },
@@ -58,7 +58,7 @@ const TutorAppliedTuition = () => {
     setPayLoading(true);
     try {
       const res = await fetch(
-        "https://bdtuitions.vercel.app/create-checkout-session",
+        "https://bdtutionsf.vercel.app/create-checkout-session",
         {
           method: "POST",
           headers: { "Content-Type": "application/json" },

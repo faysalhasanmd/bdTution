@@ -15,7 +15,7 @@ const UpdateUserRoleModal = ({
     setLoading(true);
     try {
       const res = await fetch(
-        `https://bdtuitions.vercel.app/users/role/${userEmail}`,
+        `https://bdtutionsf.vercel.app/users/role/${userEmail}`,
         {
           method: "PATCH",
           headers: {

@@ -23,7 +23,7 @@ const About = () => {
   }, []);
 
   useEffect(() => {
-    fetch("https://bdtuitions.vercel.app/admin/dashboard-stats")
+    fetch("https://bdtutionsf.vercel.app/admin/dashboard-stats")
       .then((res) => res.json())
       .then((data) => setStats(data))
       .catch((err) => console.error(err));

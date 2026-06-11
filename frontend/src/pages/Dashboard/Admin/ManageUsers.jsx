@@ -8,7 +8,7 @@ const ManageUsers = () => {
 
   const fetchUsers = async () => {
     try {
-      const res = await fetch("https://bdtuitions.vercel.app/users", {
+      const res = await fetch("https://bdtutionsf.vercel.app/users", {
         headers: {
           Authorization: `Bearer ${localStorage.getItem("token")}`, // Admin JWT
         },

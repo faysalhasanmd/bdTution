@@ -623,7 +623,7 @@ function DataTable({
 // ─── Main Component ───────────────────────────────────────────────────────────
 const TutorStatistics = () => {
   const { user } = useAuth();
-  const base = "https://bdtuitions.vercel.app";
+  const base = "https://bdtutionsf.vercel.app";
 
   const [applications, setApplications] = useState([]);
   const [payments, setPayments] = useState([]);

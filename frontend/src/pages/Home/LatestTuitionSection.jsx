@@ -10,7 +10,7 @@ const LatestTuitionSection = () => {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    fetch("https://bdtuitions.vercel.app/tuition/latest")
+    fetch("https://bdtutionsf.vercel.app/tuition/latest")
       .then((res) => res.json())
       .then((data) => {
         setTuitions(data);

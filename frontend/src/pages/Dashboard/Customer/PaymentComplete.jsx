@@ -19,7 +19,7 @@ const PaymentComplete = () => {
 
       try {
         const response = await fetch(
-          "https://bdtuitions.vercel.app/verify-payment",
+          "https://bdtutionsf.vercel.app/verify-payment",
           {
             method: "POST",
             headers: {

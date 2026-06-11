@@ -19,7 +19,7 @@ const EditModal = ({ isOpen, closeModal, item, refetch }) => {
   const handleUpdate = async () => {
     try {
       const { data } = await axios.put(
-        `https://bdtuitions.vercel.app/tuition/update/${item._id}`,
+        `https://bdtutionsf.vercel.app/tuition/update/${item._id}`,
         form,
       );
 

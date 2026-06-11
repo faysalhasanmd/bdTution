@@ -45,7 +45,7 @@ const AdminStatistics = () => {
       try {
         setError(null); // নতুন করে রিকোয়েস্ট পাঠানোর আগে এরর ক্লিন করা
         const res = await axios.get(
-          "https://bdtuitions.vercel.app/admin/dashboard-stats",
+          "https://bdtutionsf.vercel.app/admin/dashboard-stats",
         );
         setStats(res.data);
       } catch (err) {

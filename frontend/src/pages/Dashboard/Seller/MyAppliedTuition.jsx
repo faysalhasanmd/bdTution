@@ -25,7 +25,7 @@ const MyAppliedTuition = () => {
     try {
       setLoading(true);
       const res = await fetch(
-        `https://bdtuitions.vercel.app/applications/tutor/${user.email}`,
+        `https://bdtutionsf.vercel.app/applications/tutor/${user.email}`,
       );
       const data = await res.json();
       setApplications(data);
@@ -43,7 +43,7 @@ const MyAppliedTuition = () => {
   const handleDelete = async (id) => {
     if (!window.confirm("Delete this application?")) return;
     const res = await fetch(
-      `https://bdtuitions.vercel.app/applications/${id}`,
+      `https://bdtutionsf.vercel.app/applications/${id}`,
       {
         method: "DELETE",
       },
@@ -57,7 +57,7 @@ const MyAppliedTuition = () => {
   const handleUpdate = async (id) => {
     if (!salary) return;
     const res = await fetch(
-      `https://bdtuitions.vercel.app/applications/update/${id}`,
+      `https://bdtutionsf.vercel.app/applications/update/${id}`,
       {
         method: "PATCH",
         headers: { "Content-Type": "application/json" },

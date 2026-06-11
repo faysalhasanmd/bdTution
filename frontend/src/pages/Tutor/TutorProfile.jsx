@@ -12,7 +12,7 @@ const TutorProfile = () => {
 
   useEffect(() => {
     axios
-      .get(`https://bdtuitions.vercel.app/users/tutors/${id}`)
+      .get(`https://bdtutionsf.vercel.app/users/tutors/${id}`)
       .then((res) => {
         setTutor(res.data);
         setLoading(false);

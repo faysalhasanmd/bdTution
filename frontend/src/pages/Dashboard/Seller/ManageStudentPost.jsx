@@ -9,7 +9,7 @@ const ManageStudentPost = () => {
   const fetchData = async () => {
     try {
       const res = await axios.get(
-        `https://bdtuitions.vercel.app/tuition?status=Pending`,
+        `https://bdtutionsf.vercel.app/tuition?status=Pending`,
       );
       setPending(res.data);
     } catch (err) {
