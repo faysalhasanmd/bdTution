@@ -25,6 +25,7 @@ app.use(
       "http://localhost:5174",
       "https://bdtuitions.vercel.app",
       "https://cerulean-maamoul-f79e46.netlify.app",
+      "https://preeminent-mermaid-04ba7b.netlify.app/",
     ],
   }),
 );
@@ -35,8 +36,6 @@ app.use("/user", userRoute);
 app.use("/users", userRoute);
 app.use("/contact", contactRoute);
 app.use("/", paymentRoute);
-// payment routes এখনো index.js এ রাখো কারণ stripe instance দরকার
-// পরে আলাদা করতে চাইলে stripe কে config এ নিয়ে যাও
 
 app.use(errorHandler);
 
