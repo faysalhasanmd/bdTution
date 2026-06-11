@@ -11,10 +11,16 @@ const contactRoute = require("./routes/contact.route");
 
 const port = process.env.PORT || 3000;
 
-const decoded = Buffer.from(process.env.FB_SERVICE_KEY, "base64").toString(
-  "utf-8",
-);
-admin.initializeApp({ credential: admin.credential.cert(JSON.parse(decoded)) });
+try {
+  const decoded = Buffer.from(process.env.FB_SERVICE_KEY, "base64").toString(
+    "utf-8",
+  );
+  admin.initializeApp({
+    credential: admin.credential.cert(JSON.parse(decoded)),
+  });
+} catch (err) {
+  console.error("Firebase init error:", err.message);
+}
 
 const app = express();
 
@@ -25,7 +31,7 @@ app.use(
       "http://localhost:5174",
       "https://bdtuitions.vercel.app",
       "https://cerulean-maamoul-f79e46.netlify.app",
-      "https://preeminent-mermaid-04ba7b.netlify.app/",
+      "https://preeminent-mermaid-04ba7b.netlify.app",
     ],
   }),
 );
