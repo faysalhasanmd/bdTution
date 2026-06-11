@@ -9,9 +9,7 @@ const StudentPaymentHistory = () => {
 
   useEffect(() => {
     if (!user?.email) return;
-    fetch(
-      `https://miraculous-vibrancy-production.up.railway.app/payments/student/${user.email}`,
-    )
+    fetch(`https://bdtuitions.vercel.app/payments/student/${user.email}`)
       .then((res) => res.json())
       .then((data) => {
         setPayments(data);

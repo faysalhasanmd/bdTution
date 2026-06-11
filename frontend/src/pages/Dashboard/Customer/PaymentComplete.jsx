@@ -19,7 +19,7 @@ const PaymentComplete = () => {
 
       try {
         const response = await fetch(
-          "https://miraculous-vibrancy-production.up.railway.app/verify-payment",
+          "https://bdtuitions.vercel.app/verify-payment",
           {
             method: "POST",
             headers: {

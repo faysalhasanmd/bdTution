@@ -10,9 +10,7 @@ const TutorOngoingTuitions = () => {
   useEffect(() => {
     if (!user?.email) return;
     setLoading(true);
-    fetch(
-      `https://miraculous-vibrancy-production.up.railway.app/tutor/ongoing/${user.email}`,
-    )
+    fetch(`https://bdtuitions.vercel.app/tutor/ongoing/${user.email}`)
       .then((res) => res.json())
       .then((data) => {
         setTuitions(data || []);

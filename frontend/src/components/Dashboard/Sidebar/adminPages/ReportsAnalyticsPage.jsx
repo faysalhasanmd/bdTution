@@ -13,7 +13,7 @@ const ReportsAnalyticsPage = () => {
     try {
       setLoading(true);
       const res = await axios.get(
-        "https://miraculous-vibrancy-production.up.railway.app/admin/reports/transactions",
+        "https://bdtuitions.vercel.app/admin/reports/transactions",
       );
       setTotalEarnings(res.data.totalEarnings);
       setTransactions(res.data.transactions);

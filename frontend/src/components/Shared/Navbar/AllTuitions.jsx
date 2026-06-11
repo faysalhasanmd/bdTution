@@ -163,9 +163,7 @@ const AllTuitions = () => {
 
   useEffect(() => {
     axios
-      .get(
-        "https://miraculous-vibrancy-production.up.railway.app/tuition?status=Approved",
-      )
+      .get("https://bdtuitions.vercel.app/tuition?status=Approved")
       .then((res) => {
         setTuitions(res.data);
         setLoading(false);

@@ -52,9 +52,7 @@ const StatisticsSection = () => {
   const [dashStats, setDashStats] = useState(null);
 
   useEffect(() => {
-    fetch(
-      "https://miraculous-vibrancy-production.up.railway.app/admin/dashboard-stats",
-    )
+    fetch("https://bdtuitions.vercel.app/admin/dashboard-stats")
       .then((res) => res.json())
       .then((data) => setDashStats(data))
       .catch((err) => console.error(err));
@@ -554,7 +552,7 @@ const Home = () => {
     const fetchTuitions = async () => {
       try {
         const res = await fetch(
-          "https://miraculous-vibrancy-production.up.railway.app/tuition?status=Approved",
+          "https://bdtuitions.vercel.app/tuition?status=Approved",
         );
         const data = await res.json();
         setApprovedTuitions(data);

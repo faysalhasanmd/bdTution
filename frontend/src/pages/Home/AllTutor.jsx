@@ -8,9 +8,7 @@ const AllTutor = () => {
 
   useEffect(() => {
     axios
-      .get(
-        "https://miraculous-vibrancy-production.up.railway.app/users/tutors",
-      )
+      .get("https://bdtuitions.vercel.app/users/tutors")
       .then((res) => setTutors(res.data))
       .catch((err) => console.log(err));
   }, []);

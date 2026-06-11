@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from "react";
+import { TbFidgetSpinner } from "react-icons/tb";
 import useAuth from "../../../hooks/useAuth";
 import LoadingSpinner from "../../../components/Shared/LoadingSpinner";
 
@@ -11,15 +12,14 @@ const TutorAppliedTuition = () => {
   const [error, setError] = useState("");
   const [showModal, setShowModal] = useState(false);
   const [selectedApp, setSelectedApp] = useState(null);
+  const [payLoading, setPayLoading] = useState(false);
 
   const defaultAvatar = "https://i.ibb.co/4pDNDk1/avatar.png";
 
   useEffect(() => {
     if (!userEmail) return;
     setLoading(true);
-    fetch(
-      `https://miraculous-vibrancy-production.up.railway.app/applications/student/${userEmail}`,
-    )
+    fetch(`https://bdtuitions.vercel.app/applications/student/${userEmail}`)
       .then((res) => res.json())
       .then((data) => {
         setApplications(data.reverse());
@@ -34,7 +34,7 @@ const TutorAppliedTuition = () => {
   const handleStatusChange = async (id, newStatus) => {
     try {
       const res = await fetch(
-        `https://miraculous-vibrancy-production.up.railway.app/applications/${id}`,
+        `https://bdtuitions.vercel.app/applications/${id}`,
         {
           method: "PATCH",
           headers: { "Content-Type": "application/json" },
@@ -55,9 +55,10 @@ const TutorAppliedTuition = () => {
   };
 
   const handlePayment = async (app) => {
+    setPayLoading(true);
     try {
       const res = await fetch(
-        "https://miraculous-vibrancy-production.up.railway.app/create-checkout-session",
+        "https://bdtuitions.vercel.app/create-checkout-session",
         {
           method: "POST",
           headers: { "Content-Type": "application/json" },
@@ -73,8 +74,19 @@ const TutorAppliedTuition = () => {
     } catch (err) {
       console.error("Payment Error:", err);
       alert("Payment failed. Try again.");
+    } finally {
+      setPayLoading(false);
     }
   };
+
+  // Get initials from tutor name
+  const getInitials = (name = "") =>
+    name
+      .split(" ")
+      .slice(0, 2)
+      .map((n) => n[0])
+      .join("")
+      .toUpperCase();
 
   if (loading) return <LoadingSpinner />;
 
@@ -199,66 +211,214 @@ const TutorAppliedTuition = () => {
           </div>
         )}
 
-        {/* Payment Modal */}
+        {/* ── Payment Modal ── */}
         {showModal && selectedApp && (
-          <div className="fixed inset-0 z-50 flex items-center justify-center">
+          <div className="fixed inset-0 z-50 flex items-center justify-center px-4">
+            {/* Backdrop */}
             <div
-              className="absolute inset-0 bg-black/50 backdrop-blur-[2px]"
-              onClick={() => setShowModal(false)}
+              className="absolute inset-0 bg-black/50 backdrop-blur-sm"
+              onClick={() => !payLoading && setShowModal(false)}
             />
-            <div
-              className="relative bg-white dark:bg-gray-800
-              border border-gray-100 dark:border-gray-700
-              rounded-xl shadow-xl p-6 w-full max-w-md z-50"
-            >
-              {/* Title */}
-              <div className="flex flex-col items-center mb-5">
-                <h3 className="text-2xl font-semibold text-gray-800 dark:text-white tracking-wide">
-                  Confirm Payment
-                </h3>
-                <div className="w-24 h-[3px] bg-lime-400 rounded-full mt-2" />
-              </div>
 
-              {/* Content */}
-              <div className="space-y-3 text-sm text-gray-700 dark:text-gray-300">
-                <div className="flex justify-between">
-                  <span className="font-medium">Tutor</span>
-                  <span>{selectedApp.tutorName}</span>
-                </div>
-                <div className="flex justify-between">
-                  <span className="font-medium">Email</span>
-                  <span className="text-right break-all">
-                    {selectedApp.tutorEmail}
-                  </span>
-                </div>
-                <div className="flex justify-between">
-                  <span className="font-medium">Salary</span>
-                  <span className="text-green-600 dark:text-green-400 font-semibold">
-                    {selectedApp.expectedSalary} BDT
-                  </span>
-                </div>
-                <div className="flex justify-between">
-                  <span className="font-medium">Tuition ID</span>
-                  <span className="text-gray-500 dark:text-gray-400">
-                    {selectedApp.tuitionId}
-                  </span>
-                </div>
-              </div>
+            {/* Modal card */}
+            <div className="relative bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-2xl shadow-2xl w-full max-w-md z-50 overflow-hidden">
+              {/* Top accent bar */}
+              <div className="h-1 w-full bg-gradient-to-r from-lime-400 to-emerald-500" />
 
-              {/* Buttons */}
-              <div className="flex justify-end gap-3 mt-6 pt-4 border-t border-gray-100 dark:border-gray-700">
-                <button
-                  onClick={() => setShowModal(false)}
-                  className="px-4 py-2 rounded-lg bg-gray-200 dark:bg-gray-700 text-gray-800 dark:text-gray-200 font-medium hover:bg-gray-300 dark:hover:bg-gray-600 transition"
-                >
-                  Cancel
-                </button>
-                <button
-                  onClick={() => handlePayment(selectedApp)}
-                  className="px-5 py-2 rounded-lg bg-lime-500 hover:bg-lime-600 text-white font-medium shadow-sm transition"
-                >
-                  Pay & Accept
-                </button>
+              <div className="p-6">
+                {/* Header row */}
+                <div className="flex items-center gap-3 mb-5">
+                  {/* Avatar / Initials */}
+                  <div className="w-12 h-12 rounded-full bg-lime-100 dark:bg-lime-900/40 flex items-center justify-center text-lime-700 dark:text-lime-400 font-bold text-sm flex-shrink-0 border-2 border-lime-200 dark:border-lime-700">
+                    {getInitials(selectedApp.tutorName)}
+                  </div>
+                  <div className="flex-1 min-w-0">
+                    <h3 className="text-lg font-semibold text-gray-800 dark:text-white leading-tight truncate">
+                      {selectedApp.tutorName}
+                    </h3>
+                    <p className="text-xs text-gray-400 dark:text-gray-500 truncate">
+                      {selectedApp.tutorEmail}
+                    </p>
+                  </div>
+                  {/* Close button */}
+                  <button
+                    onClick={() => !payLoading && setShowModal(false)}
+                    disabled={payLoading}
+                    className="text-gray-400 hover:text-gray-600 dark:hover:text-gray-200 transition disabled:opacity-40 flex-shrink-0"
+                    aria-label="Close"
+                  >
+                    <svg
+                      xmlns="http://www.w3.org/2000/svg"
+                      className="w-5 h-5"
+                      fill="none"
+                      viewBox="0 0 24 24"
+                      stroke="currentColor"
+                    >
+                      <path
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        strokeWidth={2}
+                        d="M6 18L18 6M6 6l12 12"
+                      />
+                    </svg>
+                  </button>
+                </div>
+
+                {/* Info notice */}
+                <div className="flex items-start gap-2.5 bg-blue-50 dark:bg-blue-900/20 border border-blue-100 dark:border-blue-800/40 text-blue-700 dark:text-blue-300 text-xs rounded-xl px-4 py-3 mb-5 leading-relaxed">
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    className="w-4 h-4 mt-0.5 flex-shrink-0"
+                    fill="none"
+                    viewBox="0 0 24 24"
+                    stroke="currentColor"
+                  >
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      strokeWidth={2}
+                      d="M13 16h-1v-4h-1m1-4h.01M12 2a10 10 0 100 20A10 10 0 0012 2z"
+                    />
+                  </svg>
+                  <span>
+                    Payment is processed securely via Stripe. Once paid, the
+                    tutor's status will update to <strong>Accepted</strong>{" "}
+                    automatically.
+                  </span>
+                </div>
+
+                {/* Details list */}
+                <div className="bg-gray-50 dark:bg-gray-700/40 rounded-xl divide-y divide-gray-200 dark:divide-gray-600/60 px-4 mb-6">
+                  <div className="flex justify-between items-center py-3">
+                    <span className="text-sm text-gray-500 dark:text-gray-400 flex items-center gap-1.5">
+                      <svg
+                        xmlns="http://www.w3.org/2000/svg"
+                        className="w-4 h-4"
+                        fill="none"
+                        viewBox="0 0 24 24"
+                        stroke="currentColor"
+                      >
+                        <path
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                          strokeWidth={2}
+                          d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"
+                        />
+                      </svg>
+                      Qualification
+                    </span>
+                    <span className="text-sm font-medium text-gray-700 dark:text-gray-200 text-right">
+                      {selectedApp.qualification}
+                    </span>
+                  </div>
+                  <div className="flex justify-between items-center py-3">
+                    <span className="text-sm text-gray-500 dark:text-gray-400 flex items-center gap-1.5">
+                      <svg
+                        xmlns="http://www.w3.org/2000/svg"
+                        className="w-4 h-4"
+                        fill="none"
+                        viewBox="0 0 24 24"
+                        stroke="currentColor"
+                      >
+                        <path
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                          strokeWidth={2}
+                          d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"
+                        />
+                      </svg>
+                      Experience
+                    </span>
+                    <span className="text-sm font-medium text-gray-700 dark:text-gray-200 text-right">
+                      {selectedApp.experience || "N/A"}
+                    </span>
+                  </div>
+                  <div className="flex justify-between items-center py-3">
+                    <span className="text-sm text-gray-500 dark:text-gray-400 flex items-center gap-1.5">
+                      <svg
+                        xmlns="http://www.w3.org/2000/svg"
+                        className="w-4 h-4"
+                        fill="none"
+                        viewBox="0 0 24 24"
+                        stroke="currentColor"
+                      >
+                        <path
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                          strokeWidth={2}
+                          d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
+                        />
+                      </svg>
+                      Salary
+                    </span>
+                    <span className="text-base font-bold text-green-600 dark:text-green-400">
+                      ৳ {selectedApp.expectedSalary} BDT
+                    </span>
+                  </div>
+                  <div className="flex justify-between items-center py-3">
+                    <span className="text-sm text-gray-500 dark:text-gray-400 flex items-center gap-1.5">
+                      <svg
+                        xmlns="http://www.w3.org/2000/svg"
+                        className="w-4 h-4"
+                        fill="none"
+                        viewBox="0 0 24 24"
+                        stroke="currentColor"
+                      >
+                        <path
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                          strokeWidth={2}
+                          d="M10 6H5a2 2 0 00-2 2v9a2 2 0 002 2h14a2 2 0 002-2V8a2 2 0 00-2-2h-5m-4 0V5a2 2 0 114 0v1m-4 0a2 2 0 104 0"
+                        />
+                      </svg>
+                      Tuition ID
+                    </span>
+                    <span className="text-xs font-mono text-gray-400 dark:text-gray-500">
+                      {selectedApp.tuitionId}
+                    </span>
+                  </div>
+                </div>
+
+                {/* Action buttons */}
+                <div className="flex gap-3">
+                  <button
+                    onClick={() => setShowModal(false)}
+                    disabled={payLoading}
+                    className="flex-1 py-2.5 rounded-xl border border-gray-200 dark:border-gray-600 text-gray-600 dark:text-gray-300 text-sm font-medium hover:bg-gray-100 dark:hover:bg-gray-700 transition disabled:opacity-40 disabled:cursor-not-allowed"
+                  >
+                    Cancel
+                  </button>
+                  <button
+                    onClick={() => handlePayment(selectedApp)}
+                    disabled={payLoading}
+                    className="flex-[2] py-2.5 rounded-xl bg-lime-500 hover:bg-lime-600 disabled:opacity-70 disabled:cursor-not-allowed text-white text-sm font-semibold transition-colors flex items-center justify-center gap-2"
+                  >
+                    {payLoading ? (
+                      <>
+                        <TbFidgetSpinner className="animate-spin" size={20} />
+                        Processing...
+                      </>
+                    ) : (
+                      <>
+                        <svg
+                          xmlns="http://www.w3.org/2000/svg"
+                          className="w-4 h-4"
+                          fill="none"
+                          viewBox="0 0 24 24"
+                          stroke="currentColor"
+                        >
+                          <path
+                            strokeLinecap="round"
+                            strokeLinejoin="round"
+                            strokeWidth={2}
+                            d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"
+                          />
+                        </svg>
+                        Pay &amp; Accept
+                      </>
+                    )}
+                  </button>
+                </div>
               </div>
             </div>
           </div>

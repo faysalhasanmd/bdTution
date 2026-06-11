@@ -12,7 +12,7 @@ import {
 } from "chart.js";
 import axios from "axios";
 import LoadingSpinner from "../../Shared/LoadingSpinner";
-import { FaChartLine } from "react-icons/fa";
+import { FaChartLine, FaExclamationTriangle } from "react-icons/fa"; // 👈 এরর আইকন যোগ করা হয়েছে
 import AOS from "aos";
 import "aos/dist/aos.css";
 
@@ -30,6 +30,7 @@ ChartJS.register(
 const AdminStatistics = () => {
   const [stats, setStats] = useState(null);
   const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null); // 👈 এরর ট্র্যাক করার জন্য নতুন স্টেট
 
   // ✅ AOS INIT
   useEffect(() => {
@@ -42,12 +43,16 @@ const AdminStatistics = () => {
   useEffect(() => {
     const fetchStats = async () => {
       try {
+        setError(null); // নতুন করে রিকোয়েস্ট পাঠানোর আগে এরর ক্লিন করা
         const res = await axios.get(
-          "https://miraculous-vibrancy-production.up.railway.app/admin/dashboard-stats",
+          "https://bdtuitions.vercel.app/admin/dashboard-stats",
         );
         setStats(res.data);
       } catch (err) {
         console.error("Failed to fetch dashboard stats:", err);
+        setError(
+          "সার্ভার থেকে ডাটা লোড করা যায়নি। অনুগ্রহ করে আবার চেষ্টা করুন।",
+        ); // 👈 এরর মেসেজ সেট করা
       } finally {
         setLoading(false);
       }
@@ -55,8 +60,31 @@ const AdminStatistics = () => {
     fetchStats();
   }, []);
 
+  // ১. লোডিং অবস্থায় স্পিনার দেখাবে
   if (loading) return <LoadingSpinner />;
 
+  // ২. যদি এপিআই ফেইল করে এবং stats null থাকে, তবে ক্রাশ না করে এই সুন্দর মেসেজটি দেখাবে
+  if (error || !stats) {
+    return (
+      <div className="flex flex-col items-center justify-center min-h-screen bg-gray-100 p-5">
+        <div className="bg-white p-8 rounded-xl shadow-md text-center max-w-md">
+          <FaExclamationTriangle className="text-red-500 text-5xl mx-auto mb-4" />
+          <h3 className="text-xl font-semibold text-gray-800 mb-2">
+            কোথাও একটি সমস্যা হয়েছে!
+          </h3>
+          <p className="text-gray-600 mb-4">{error || "ডাটা পাওয়া যায়নি।"}</p>
+          <button
+            onClick={() => window.location.reload()}
+            className="px-5 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition"
+          >
+            আবার চেষ্টা করুন
+          </button>
+        </div>
+      </div>
+    );
+  }
+
+  // ৩. ডাটা সঠিকভাবে পেলেই কেবল নিচের কোডগুলো রান করবে (এখন সম্পূর্ণ নিরাপদ)
   const admins =
     stats.admins !== undefined
       ? stats.admins

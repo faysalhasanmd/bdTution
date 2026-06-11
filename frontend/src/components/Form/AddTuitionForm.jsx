@@ -35,7 +35,7 @@ const AddTuitionForm = () => {
       };
 
       const res = await axios.post(
-        `https://miraculous-vibrancy-production.up.railway.app/tuition`,
+        `https://bdtuitions.vercel.app/tuition`,
         tuitionData,
       );
 

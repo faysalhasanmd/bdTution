@@ -57,16 +57,14 @@ const TuitionDetails = () => {
   useEffect(() => {
     const fetchTuition = async () => {
       try {
-        const res = await fetch(
-          `https://miraculous-vibrancy-production.up.railway.app/tuition/${id}`,
-        );
+        const res = await fetch(`https://bdtuitions.vercel.app/tuition/${id}`);
         const data = await res.json();
         setTuition(data);
 
         // Fetch related tuitions from DB — same subject, exclude current
         try {
           const relRes = await fetch(
-            `https://miraculous-vibrancy-production.up.railway.app/tuition?status=Approved`,
+            `https://bdtuitions.vercel.app/tuition?status=Approved`,
           );
           const relData = await relRes.json();
           const filtered = relData
@@ -102,14 +100,11 @@ const TuitionDetails = () => {
       appliedAt: new Date(),
     };
     try {
-      const res = await fetch(
-        "https://miraculous-vibrancy-production.up.railway.app/applications",
-        {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify(applicationData),
-        },
-      );
+      const res = await fetch("https://bdtuitions.vercel.app/applications", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(applicationData),
+      });
       if (res.ok) {
         alert("✅ Application Submitted!");
         setOpen(false);
