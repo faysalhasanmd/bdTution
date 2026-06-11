@@ -8,11 +8,14 @@ const ManageUsers = () => {
 
   const fetchUsers = async () => {
     try {
-      const res = await fetch("https://tuitionsbd.vercel.app/users", {
-        headers: {
-          Authorization: `Bearer ${localStorage.getItem("token")}`, // Admin JWT
+      const res = await fetch(
+        "https://miraculous-vibrancy-production.up.railway.app//users",
+        {
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem("token")}`, // Admin JWT
+          },
         },
-      });
+      );
       const data = await res.json();
       setUsers(data);
       setLoading(false);

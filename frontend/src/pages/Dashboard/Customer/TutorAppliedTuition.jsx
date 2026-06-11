@@ -17,7 +17,9 @@ const TutorAppliedTuition = () => {
   useEffect(() => {
     if (!userEmail) return;
     setLoading(true);
-    fetch(`https://tuitionsbd.vercel.app/applications/student/${userEmail}`)
+    fetch(
+      `https://miraculous-vibrancy-production.up.railway.app//applications/student/${userEmail}`,
+    )
       .then((res) => res.json())
       .then((data) => {
         setApplications(data.reverse());
@@ -32,7 +34,7 @@ const TutorAppliedTuition = () => {
   const handleStatusChange = async (id, newStatus) => {
     try {
       const res = await fetch(
-        `https://tuitionsbd.vercel.app/applications/${id}`,
+        `https://miraculous-vibrancy-production.up.railway.app//applications/${id}`,
         {
           method: "PATCH",
           headers: { "Content-Type": "application/json" },
@@ -55,7 +57,7 @@ const TutorAppliedTuition = () => {
   const handlePayment = async (app) => {
     try {
       const res = await fetch(
-        "https://tuitionsbd.vercel.app/create-checkout-session",
+        "https://miraculous-vibrancy-production.up.railway.app//create-checkout-session",
         {
           method: "POST",
           headers: { "Content-Type": "application/json" },

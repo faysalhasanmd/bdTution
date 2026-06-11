@@ -404,7 +404,7 @@ const StudentStatistics = () => {
   useEffect(() => {
     if (!user?.email) return;
 
-    const base = "https://tuitionsbd.vercel.app";
+    const base = "https://miraculous-vibrancy-production.up.railway.app/";
 
     Promise.all([
       fetch(`${base}/tuition?email=${user.email}`).then((r) => r.json()),

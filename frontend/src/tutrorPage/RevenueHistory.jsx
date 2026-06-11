@@ -10,7 +10,9 @@ const RevenueHistory = () => {
   useEffect(() => {
     if (!user?.email) return;
     setLoading(true);
-    fetch(`https://tuitionsbd.vercel.app/payments/tutor/${user.email}`)
+    fetch(
+      `https://miraculous-vibrancy-production.up.railway.app//payments/tutor/${user.email}`,
+    )
       .then((res) => res.json())
       .then((data) => {
         setPayments(data || []);

@@ -23,7 +23,9 @@ const About = () => {
   }, []);
 
   useEffect(() => {
-    fetch("https://tuitionsbd.vercel.app/admin/dashboard-stats")
+    fetch(
+      "https://miraculous-vibrancy-production.up.railway.app//admin/dashboard-stats",
+    )
       .then((res) => res.json())
       .then((data) => setStats(data))
       .catch((err) => console.error(err));

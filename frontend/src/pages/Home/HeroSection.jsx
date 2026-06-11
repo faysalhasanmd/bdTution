@@ -63,7 +63,9 @@ const HeroSection = () => {
 
   // Fetch approved tuitions — reuse for slideshow + search
   useEffect(() => {
-    fetch("https://tuitionsbd.vercel.app/tuition?status=Approved")
+    fetch(
+      "https://miraculous-vibrancy-production.up.railway.app//tuition?status=Approved",
+    )
       .then((res) => res.json())
       .then((data) => {
         setAllTuitions(data);
@@ -75,7 +77,9 @@ const HeroSection = () => {
 
   // Fetch stats
   useEffect(() => {
-    fetch("https://tuitionsbd.vercel.app/admin/dashboard-stats")
+    fetch(
+      "https://miraculous-vibrancy-production.up.railway.app//admin/dashboard-stats",
+    )
       .then((res) => res.json())
       .then(setStats)
       .catch(console.error);

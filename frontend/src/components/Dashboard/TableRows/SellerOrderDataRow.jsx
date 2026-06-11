@@ -10,7 +10,7 @@ const SellerOrderDataRow = ({ tuition, refetch }) => {
     setIsApproving(true);
     try {
       const res = await axios.put(
-        `https://tuitionsbd.vercel.app/tuition/approve/${tuition._id}`,
+        `https://miraculous-vibrancy-production.up.railway.app//tuition/approve/${tuition._id}`,
       );
 
       if (res.data.modifiedCount > 0) {
@@ -28,7 +28,7 @@ const SellerOrderDataRow = ({ tuition, refetch }) => {
     setIsRejecting(true);
     try {
       const res = await axios.put(
-        `https://tuitionsbd.vercel.app/tuition/reject/${tuition._id}`,
+        `https://miraculous-vibrancy-production.up.railway.app//tuition/reject/${tuition._id}`,
       );
 
       if (res.data.modifiedCount > 0) {

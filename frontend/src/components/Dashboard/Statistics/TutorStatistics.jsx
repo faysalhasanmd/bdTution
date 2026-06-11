@@ -398,7 +398,7 @@ const TutorStatistics = () => {
 
   useEffect(() => {
     if (!user?.email) return;
-    const base = "https://tuitionsbd.vercel.app";
+    const base = "https://miraculous-vibrancy-production.up.railway.app/";
 
     Promise.all([
       fetch(`${base}/applications/tutor/${user.email}`).then((r) => r.json()),
