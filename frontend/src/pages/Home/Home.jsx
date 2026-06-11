@@ -53,7 +53,7 @@ const StatisticsSection = () => {
 
   useEffect(() => {
     fetch(
-      "https://miraculous-vibrancy-production.up.railway.app//admin/dashboard-stats",
+      "https://miraculous-vibrancy-production.up.railway.app/admin/dashboard-stats",
     )
       .then((res) => res.json())
       .then((data) => setDashStats(data))
@@ -554,7 +554,7 @@ const Home = () => {
     const fetchTuitions = async () => {
       try {
         const res = await fetch(
-          "https://miraculous-vibrancy-production.up.railway.app//tuition?status=Approved",
+          "https://miraculous-vibrancy-production.up.railway.app/tuition?status=Approved",
         );
         const data = await res.json();
         setApprovedTuitions(data);

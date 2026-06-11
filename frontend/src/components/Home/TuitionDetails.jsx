@@ -58,7 +58,7 @@ const TuitionDetails = () => {
     const fetchTuition = async () => {
       try {
         const res = await fetch(
-          `https://miraculous-vibrancy-production.up.railway.app//tuition/${id}`,
+          `https://miraculous-vibrancy-production.up.railway.app/tuition/${id}`,
         );
         const data = await res.json();
         setTuition(data);
@@ -66,7 +66,7 @@ const TuitionDetails = () => {
         // Fetch related tuitions from DB — same subject, exclude current
         try {
           const relRes = await fetch(
-            `https://miraculous-vibrancy-production.up.railway.app//tuition?status=Approved`,
+            `https://miraculous-vibrancy-production.up.railway.app/tuition?status=Approved`,
           );
           const relData = await relRes.json();
           const filtered = relData
@@ -103,7 +103,7 @@ const TuitionDetails = () => {
     };
     try {
       const res = await fetch(
-        "https://miraculous-vibrancy-production.up.railway.app//applications",
+        "https://miraculous-vibrancy-production.up.railway.app/applications",
         {
           method: "POST",
           headers: { "Content-Type": "application/json" },

@@ -190,7 +190,7 @@ const LatestTutorsSection = () => {
 
   useEffect(() => {
     fetch(
-      "https://miraculous-vibrancy-production.up.railway.app//users/latest-tutors",
+      "https://miraculous-vibrancy-production.up.railway.app/users/latest-tutors",
     )
       .then((res) => res.json())
       .then((data) => {

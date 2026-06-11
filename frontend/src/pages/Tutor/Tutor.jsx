@@ -10,7 +10,7 @@ const Tutor = () => {
   useEffect(() => {
     axios
       .get(
-        "https://miraculous-vibrancy-production.up.railway.app//users/tutors",
+        "https://miraculous-vibrancy-production.up.railway.app/users/tutors",
       )
       .then((res) => {
         setTutors(res.data);

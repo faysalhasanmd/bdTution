@@ -43,7 +43,7 @@ const AdminStatistics = () => {
     const fetchStats = async () => {
       try {
         const res = await axios.get(
-          "https://miraculous-vibrancy-production.up.railway.app//admin/dashboard-stats",
+          "https://miraculous-vibrancy-production.up.railway.app/admin/dashboard-stats",
         );
         setStats(res.data);
       } catch (err) {

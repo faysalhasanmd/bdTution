@@ -15,7 +15,7 @@ const UpdateUserRoleModal = ({
     setLoading(true);
     try {
       const res = await fetch(
-        `https://miraculous-vibrancy-production.up.railway.app//users/role/${userEmail}`,
+        `https://miraculous-vibrancy-production.up.railway.app/users/role/${userEmail}`,
         {
           method: "PATCH",
           headers: {

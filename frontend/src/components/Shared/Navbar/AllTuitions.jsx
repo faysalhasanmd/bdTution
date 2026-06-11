@@ -164,7 +164,7 @@ const AllTuitions = () => {
   useEffect(() => {
     axios
       .get(
-        "https://miraculous-vibrancy-production.up.railway.app//tuition?status=Approved",
+        "https://miraculous-vibrancy-production.up.railway.app/tuition?status=Approved",
       )
       .then((res) => {
         setTuitions(res.data);

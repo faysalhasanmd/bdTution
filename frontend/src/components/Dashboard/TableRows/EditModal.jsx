@@ -19,7 +19,7 @@ const EditModal = ({ isOpen, closeModal, item, refetch }) => {
   const handleUpdate = async () => {
     try {
       const { data } = await axios.put(
-        `https://miraculous-vibrancy-production.up.railway.app//tuition/update/${item._id}`,
+        `https://miraculous-vibrancy-production.up.railway.app/tuition/update/${item._id}`,
         form,
       );
 

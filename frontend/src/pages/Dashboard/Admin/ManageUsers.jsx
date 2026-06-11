@@ -9,7 +9,7 @@ const ManageUsers = () => {
   const fetchUsers = async () => {
     try {
       const res = await fetch(
-        "https://miraculous-vibrancy-production.up.railway.app//users",
+        "https://miraculous-vibrancy-production.up.railway.app/users",
         {
           headers: {
             Authorization: `Bearer ${localStorage.getItem("token")}`, // Admin JWT

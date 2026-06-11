@@ -11,7 +11,7 @@ const LatestTuitionSection = () => {
 
   useEffect(() => {
     fetch(
-      "https://miraculous-vibrancy-production.up.railway.app//tuition/latest",
+      "https://miraculous-vibrancy-production.up.railway.app/tuition/latest",
     )
       .then((res) => res.json())
       .then((data) => {
