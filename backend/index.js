@@ -57,6 +57,7 @@ async function run() {
     const applicationsCollection = db.collection("applications");
     const UsersCollection = db.collection("users");
     const paymentsCollection = db.collection("payments");
+    const messagesCollection = db.collection("messages");
 
     // Student Posts Tuition
     app.post("/tuition", async (req, res) => {
@@ -74,15 +75,16 @@ async function run() {
       res.send({ role: result?.role });
     });
 
-    // app.get("/user/role/:email", async (req, res) => {
-    //       const email = req.params.email;
-    //       const result = await UsersCollection.findOne({ email });
-    //       console.log(result);
-    //       res.send({ role: result?.role });
-    //     });
-
-    // ***************
-
+    app.post("/contact", async (req, res) => {
+      try {
+        const message = req.body;
+        message.createdAt = new Date();
+        const result = await messagesCollection.insertOne(message);
+        res.send(result);
+      } catch (error) {
+        res.status(500).send({ message: "Failed to save message" });
+      }
+    });
     //user save and update
     app.post("/user", async (req, res) => {
       const userData = req.body;
@@ -164,18 +166,6 @@ async function run() {
       }
     });
     // ************************************
-
-    // user get role
-    // app.get("/user/role/:email", async (req, res) => {
-    //   if (req.tokenEmail !== req.params.email) {
-    //     return res.status(403).send({ message: "Forbidden" });
-    //   }
-    //   const result = await UsersCollection.findOne({
-    //     email: req.params.email,
-    //   });
-    //   res.send({ role: result?.role });
-    // });
-
     app.get("/user/role/:email", async (req, res) => {
       const email = req.params.email;
       const result = await UsersCollection.findOne({ email });

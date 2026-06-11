@@ -2,9 +2,8 @@
 
 ## Live Links
 
-- **Live Site:** https://cerulean-maamoul-f79e46.netlify.app/
-- **Client Repo:** https://github.com/faysalhasanmd/eTuitionBd/tree/main/frontend
-- **Server Repo:** https://github.com/faysalhasanmd/eTuitionBd/tree/main/backend
+- **Live Site:** https://preeminent-mermaid-04ba7b.netlify.app/
+- **Github Repo:** https://github.com/faysalhasanmd/bdTution
 
 ---
 
@@ -162,9 +161,52 @@
 
 ## Installation & Setup
 
-### 1️ Clone the repositories
+### 1️ Clone the repository
 
 ```bash
-git clone https://github.com/faysalhasanmd/eTuitionBd/tree/main/frontend
-git clone https://github.com/faysalhasanmd/eTuitionBd/tree/main/backend
+git clone https://github.com/faysalhasanmd/bdTution
+cd bdTution
+```
+
+### 2️ Install dependencies
+
+```bash
+# Frontend
+cd frontend
+npm install
+
+# Backend
+cd ../backend
+npm install
+```
+
+### 3️ Environment Variables
+
+Frontend `.env`:
+
+```
+VITE_API_URL=https://bdtutionsf.vercel.app
+VITE_FIREBASE_API_KEY=your_key
+VITE_FIREBASE_AUTH_DOMAIN=your_domain
+```
+
+Backend `.env`:
+
+```
+MONGODB_URI=your_mongodb_uri
+STRIPE_SECRETE_KEY=your_stripe_key
+FB_SERVICE_KEY=your_firebase_base64_key
+PORT=3000
+```
+
+### 4️ Run locally
+
+```bash
+# Backend
+cd backend
+npm start
+
+# Frontend
+cd frontend
+npm run dev
 ```
