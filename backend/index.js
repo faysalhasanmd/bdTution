@@ -52,7 +52,7 @@ const client = new MongoClient(process.env.MONGODB_URI, {
 
 async function run() {
   try {
-    const db = client.db("eTuitionBD");
+    const db = client.db("eduPulseBD");
     const tuitionCollection = db.collection("tuition");
     const applicationsCollection = db.collection("applications");
     const UsersCollection = db.collection("users");
@@ -176,7 +176,7 @@ async function run() {
     // Get all tutors
     app.get("/users/tutors", async (req, res) => {
       try {
-        const db = client.db("eTuitionBD");
+        const db = client.db("eduPulseBD");
         const UsersCollection = db.collection("users");
 
         const tutors = await UsersCollection.find({ role: "Tutor" }).toArray();
@@ -223,10 +223,10 @@ async function run() {
       try {
         const email = req.params.email;
         const paymentsCollection = client
-          .db("eTuitionBD")
+          .db("eduPulseBD")
           .collection("payments");
         const applicationsCollection = client
-          .db("eTuitionBD")
+          .db("eduPulseBD")
           .collection("applications");
 
         const payments = await paymentsCollection
@@ -590,7 +590,7 @@ async function run() {
     app.get("/admin/reports/transactions", async (req, res) => {
       try {
         const paymentsCollection = client
-          .db("eTuitionBD")
+          .db("eduPulseBD")
           .collection("payments");
 
         // Fetch all successful payments
@@ -709,7 +709,7 @@ async function run() {
 run();
 
 app.get("/", (req, res) => {
-  res.send("eTuitionBD Server Running...");
+  res.send("eduPulseBD Server Running...");
 });
 
 app.listen(port, () => console.log(`Server running on port ${port}`));

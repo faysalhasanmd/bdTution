@@ -3,7 +3,6 @@ import { useNavigate } from "react-router";
 import LoadingSpinner from "../../components/Shared/LoadingSpinner";
 import { Typewriter } from "react-simple-typewriter";
 
-// Animated counter hook
 function useCountUp(target, duration = 1800, start = false) {
   const [count, setCount] = useState(0);
   useEffect(() => {
@@ -30,14 +29,206 @@ const AnimatedStat = ({ value, label, start }) => {
     <div className="flex flex-col items-start">
       <span
         className={`text-2xl sm:text-3xl font-extrabold leading-none transition-all duration-500 ${
-          start && num ? "text-white" : "text-slate-500 animate-pulse"
+          start && num ? "text-slate-900" : "text-slate-300 animate-pulse"
         }`}
       >
         {start && num ? `${count.toLocaleString()}+` : "..."}
       </span>
-      <span className="text-slate-400 text-xs sm:text-sm mt-0.5 uppercase tracking-widest">
+      <span className="text-slate-500 text-[11px] sm:text-xs mt-0.5 uppercase tracking-widest font-medium">
         {label}
       </span>
+    </div>
+  );
+};
+
+const CITY_NODES = [
+  { id: "dhaka", label: "Dhaka", x: 300, y: 230, hub: true },
+  { id: "chattogram", label: "Chattogram", x: 420, y: 330 },
+  { id: "sylhet", label: "Sylhet", x: 430, y: 130 },
+  { id: "rajshahi", label: "Rajshahi", x: 150, y: 160 },
+  { id: "khulna", label: "Khulna", x: 170, y: 340 },
+  { id: "dinajpur", label: "Dinajpur", x: 110, y: 90 },
+  { id: "mymensingh", label: "Mymensingh", x: 320, y: 110 },
+  { id: "barisal", label: "Barisal", x: 270, y: 370 },
+];
+
+const MapGraphic = ({ activeNode, approvedTuitions }) => {
+  return (
+    <div className="relative w-full aspect-square max-w-[560px] mx-auto">
+      {/* Dot-grid "country" field */}
+      <svg viewBox="0 0 600 480" className="w-full h-full">
+        <defs>
+          <radialGradient id="hubGlow" cx="50%" cy="50%" r="50%">
+            <stop offset="0%" stopColor="#a3e635" stopOpacity="0.4" />
+            <stop offset="100%" stopColor="#a3e635" stopOpacity="0" />
+          </radialGradient>
+        </defs>
+
+        {/* dotted landmass silhouette (abstract, not geographic) */}
+        {Array.from({ length: 18 }).map((_, row) =>
+          Array.from({ length: 22 }).map((_, col) => {
+            const cx = 90 + col * 20;
+            const cy = 60 + row * 20;
+            const dx = (cx - 300) / 220;
+            const dy = (cy - 240) / 190;
+            const inside = dx * dx + dy * dy < 1;
+            if (!inside) return null;
+            return (
+              <circle
+                key={`${row}-${col}`}
+                cx={cx}
+                cy={cy}
+                r="1.6"
+                className="fill-slate-300"
+              />
+            );
+          }),
+        )}
+
+        {/* glow behind hub */}
+        <circle cx="300" cy="230" r="90" fill="url(#hubGlow)" />
+
+        {/* connecting curves from each city into the Dhaka hub */}
+        {CITY_NODES.filter((n) => !n.hub).map((n) => {
+          const midX = (n.x + 300) / 2;
+          const midY = (n.y + 230) / 2 - 30;
+          return (
+            <path
+              key={n.id}
+              d={`M ${n.x} ${n.y} Q ${midX} ${midY} 300 230`}
+              fill="none"
+              stroke="#65a30d"
+              strokeWidth="1.5"
+              strokeDasharray="4 5"
+              className="opacity-60"
+            >
+              <animate
+                attributeName="stroke-dashoffset"
+                from="0"
+                to="-18"
+                dur="1.4s"
+                repeatCount="indefinite"
+              />
+            </path>
+          );
+        })}
+
+        {/* city nodes */}
+        {CITY_NODES.map((n) => (
+          <g key={n.id}>
+            <circle
+              cx={n.x}
+              cy={n.y}
+              r={n.hub ? 7 : 4.5}
+              className={n.hub ? "fill-lime-500" : "fill-lime-700"}
+            />
+            {n.hub && (
+              <circle
+                cx={n.x}
+                cy={n.y}
+                r="7"
+                fill="none"
+                stroke="#a3e635"
+                strokeWidth="2"
+              >
+                <animate
+                  attributeName="r"
+                  from="7"
+                  to="22"
+                  dur="1.8s"
+                  repeatCount="indefinite"
+                />
+                <animate
+                  attributeName="opacity"
+                  from="0.6"
+                  to="0"
+                  dur="1.8s"
+                  repeatCount="indefinite"
+                />
+              </circle>
+            )}
+          </g>
+        ))}
+      </svg>
+
+      {/* HTML labels layered on top so text stays crisp */}
+      {CITY_NODES.map((n) => (
+        <div
+          key={n.id}
+          style={{
+            left: `${(n.x / 600) * 100}%`,
+            top: `calc(10% + ${(n.y / 480) * 80}%)`,
+          }}
+          className="absolute -translate-x-1/2 -translate-y-[135%]"
+        >
+          <span
+            className={`flex items-center gap-1.5 whitespace-nowrap rounded-full border px-2.5 py-1 text-[11px] font-semibold shadow-sm backdrop-blur-sm ${
+              n.hub
+                ? "bg-lime-700 text-white border-lime-700"
+                : "bg-white/90 text-slate-700 border-slate-200"
+            }`}
+          >
+            {n.hub && (
+              <svg
+                className="w-3 h-3 text-lime-300"
+                fill="currentColor"
+                viewBox="0 0 20 20"
+              >
+                <path d="M10 2a6 6 0 00-6 6c0 4.5 6 10 6 10s6-5.5 6-10a6 6 0 00-6-6zm0 8a2 2 0 110-4 2 2 0 010 4z" />
+              </svg>
+            )}
+            {n.label}
+          </span>
+        </div>
+      ))}
+
+      {/* Signature element #1 — live ticker (top-right): real tuition
+          requests cycling in as they "arrive" from different districts */}
+      {activeNode && (
+        <div
+          key={activeNode.city}
+          className="absolute top-[4%] right-[0%] flex items-center gap-2.5 bg-white rounded-2xl shadow-xl border border-lime-100 pl-2.5 pr-3.5 py-2 animate-[popIn_0.4s_ease-out]"
+        >
+          <span className="relative flex h-2 w-2 shrink-0">
+            <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-lime-400 opacity-75" />
+            <span className="relative inline-flex rounded-full h-2 w-2 bg-lime-500" />
+          </span>
+          <div className="leading-tight">
+            <p className="text-[11px] font-bold text-slate-800">
+              {activeNode.subject}
+            </p>
+            <p className="text-[10px] text-slate-400">
+              Just posted · {activeNode.city}
+            </p>
+          </div>
+        </div>
+      )}
+
+      {/* Signature element #2 — coverage card (bottom-left): the steady
+          counterpart to the live ticker, showing network scale at a glance */}
+      <div className="absolute bottom-[4%] left-[0%] flex items-center gap-2.5 bg-white rounded-2xl shadow-xl border border-lime-100 pl-2.5 pr-3.5 py-2">
+        <span className="flex items-center justify-center h-6 w-6 rounded-full bg-lime-50 shrink-0">
+          <svg
+            className="w-3.5 h-3.5 text-lime-700"
+            fill="none"
+            viewBox="0 0 24 24"
+            stroke="currentColor"
+          >
+            <path
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              strokeWidth={2}
+              d="M9 20l-5.447-2.724A1 1 0 013 16.382V5.618a1 1 0 011.447-.894L9 7m0 13l6-3m-6 3V7m6 10l4.553 2.276A1 1 0 0021 18.382V7.618a1 1 0 00-.553-.894L15 4m0 13V4m0 0L9 7"
+            />
+          </svg>
+        </span>
+        <div className="leading-tight">
+          <p className="text-[11px] font-bold text-slate-800">
+            {approvedTuitions ? `${approvedTuitions}+` : "…"} active on the map
+          </p>
+          <p className="text-[10px] text-slate-400">8 districts, growing</p>
+        </div>
+      </div>
     </div>
   );
 };
@@ -45,32 +236,31 @@ const AnimatedStat = ({ value, label, start }) => {
 const HeroSection = () => {
   const navigate = useNavigate();
 
-  const [images, setImages] = useState([]);
-  const [current, setCurrent] = useState(0);
-  const [fade, setFade] = useState(true);
   const [stats, setStats] = useState(null);
   const [statsVisible, setStatsVisible] = useState(false);
   const statsRef = useRef(null);
+
+  const [allTuitions, setAllTuitions] = useState([]);
+  const [loaded, setLoaded] = useState(false);
+  const [tickerIndex, setTickerIndex] = useState(0);
 
   // Search state
   const [query, setQuery] = useState("");
   const [searchResults, setSearchResults] = useState([]);
   const [searching, setSearching] = useState(false);
   const [showDropdown, setShowDropdown] = useState(false);
-  const [allTuitions, setAllTuitions] = useState([]);
   const searchRef = useRef(null);
   const debounceRef = useRef(null);
 
-  // Fetch approved tuitions — reuse for slideshow + search
+  // Fetch approved tuitions — reused for live ticker + search
   useEffect(() => {
     fetch("https://bdtutionsf.vercel.app/tuition?status=Approved")
       .then((res) => res.json())
       .then((data) => {
         setAllTuitions(data);
-        const imageList = data.map((item) => item.image).filter(Boolean);
-        setImages(imageList);
+        setLoaded(true);
       })
-      .catch(console.error);
+      .catch(() => setLoaded(true));
   }, []);
 
   // Fetch stats
@@ -97,18 +287,14 @@ const HeroSection = () => {
     return () => observer.disconnect();
   }, [stats]);
 
-  // Slideshow
+  // Cycle the live ticker through real tuition posts every few seconds
   useEffect(() => {
-    if (images.length === 0) return;
+    if (allTuitions.length === 0) return;
     const interval = setInterval(() => {
-      setFade(false);
-      setTimeout(() => {
-        setCurrent((prev) => (prev + 1) % images.length);
-        setFade(true);
-      }, 600);
-    }, 5000);
+      setTickerIndex((prev) => (prev + 1) % allTuitions.length);
+    }, 2800);
     return () => clearInterval(interval);
-  }, [images]);
+  }, [allTuitions]);
 
   // Close dropdown on outside click
   useEffect(() => {
@@ -162,16 +348,22 @@ const HeroSection = () => {
     if (e.key === "Escape") setShowDropdown(false);
   };
 
-  // ✅ Click on result card → /tuition/:id (matches router)
   const handleCardClick = (id) => {
     setShowDropdown(false);
     setQuery("");
     navigate(`/tuition/${id}`);
   };
 
-  if (images.length === 0) {
+  const activeTicker = allTuitions.length
+    ? {
+        subject: allTuitions[tickerIndex]?.subject || "New tuition",
+        city: allTuitions[tickerIndex]?.location || "Bangladesh",
+      }
+    : null;
+
+  if (!loaded) {
     return (
-      <div className="flex justify-center items-center h-[65vh] bg-slate-900">
+      <div className="flex justify-center items-center h-[65vh] bg-white">
         <LoadingSpinner />
       </div>
     );
@@ -184,57 +376,28 @@ const HeroSection = () => {
   ];
 
   return (
-    <section className="relative w-full h-[65vh] min-h-[520px] overflow-hidden bg-slate-900">
-      {/* Background Slideshow */}
-      <div
-        className={`absolute inset-0 bg-cover bg-center transition-opacity duration-1000 ${
-          fade ? "opacity-100" : "opacity-0"
-        }`}
-        style={{ backgroundImage: `url(${images[current]})` }}
-      />
+    <section className="relative w-full bg-white overflow-hidden">
+      <style>{`
+        @keyframes popIn {
+          0% { opacity: 0; transform: translateY(-6px) scale(0.96); }
+          100% { opacity: 1; transform: translateY(0) scale(1); }
+        }
+      `}</style>
 
-      {/* Overlays */}
-      <div className="absolute inset-0 bg-gradient-to-r from-slate-950/95 via-slate-900/75 to-slate-900/20" />
-      <div className="absolute inset-0 bg-gradient-to-t from-slate-950/70 via-transparent to-transparent" />
-
-      {/* Left accent line */}
-      <div className="absolute top-0 left-0 w-1 h-full bg-gradient-to-b from-blue-500 via-cyan-400 to-transparent hidden sm:block" />
-
-      {/* Slide indicators */}
-      <div className="absolute bottom-5 left-1/2 -translate-x-1/2 flex gap-2 z-20 sm:left-auto sm:translate-x-0 sm:right-6 sm:bottom-6 sm:flex-col">
-        {images.slice(0, Math.min(images.length, 6)).map((_, i) => (
-          <button
-            key={i}
-            onClick={() => {
-              setFade(false);
-              setTimeout(() => {
-                setCurrent(i);
-                setFade(true);
-              }, 300);
-            }}
-            className={`rounded-full transition-all duration-300 ${
-              i === current
-                ? "bg-blue-400 w-6 h-2 sm:w-2 sm:h-6"
-                : "bg-white/30 hover:bg-white/60 w-2 h-2"
-            }`}
-          />
-        ))}
-      </div>
-
-      {/* Main Content */}
-      <div className="relative z-10 h-full flex items-center">
-        <div className="w-full max-w-7xl mx-auto px-5 sm:px-8 lg:px-16 py-8">
-          {/* ① Eyebrow */}
-          <div className="flex items-center gap-2 mb-3">
-            <span className="h-px w-6 bg-blue-400" />
-            <span className="text-blue-400 text-[11px] sm:text-xs font-semibold uppercase tracking-[0.2em]">
+      <div className="relative z-10 max-w-7xl mx-auto px-5 sm:px-8 lg:px-16 pt-1 pb-5 lg:pt-2 lg:pb-8 grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
+        {/* ---------------- LEFT: TEXT ---------------- */}
+        <div>
+          {/* Eyebrow */}
+          <div className="flex items-center gap-2 mb-4">
+            <span className="h-px w-6 bg-lime-600" />
+            <span className="text-lime-700 text-[11px] sm:text-xs font-bold uppercase tracking-[0.2em]">
               Bangladesh's #1 Tuition Platform
             </span>
           </div>
 
-          {/* ② Headline */}
-          <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-[3.25rem] font-extrabold text-white leading-tight mb-3 tracking-tight">
-            <span className="block text-transparent bg-clip-text bg-gradient-to-r from-blue-400 via-cyan-300 to-blue-500">
+          {/* Headline */}
+          <h1 className="text-3xl sm:text-4xl md:text-[2.4rem] font-extrabold text-slate-900 leading-[1.08] mb-4 tracking-tight">
+            <span className="block text-lime-600 min-h-[1.2em]">
               <Typewriter
                 words={[
                   "Find The Best Home Tutors",
@@ -249,25 +412,18 @@ const HeroSection = () => {
                 delaySpeed={2000}
               />
             </span>
-            <span className="block text-white mt-0.5 relative w-fit">
-              Near You
-              <span className="absolute -bottom-1 left-0 w-full h-[3px] rounded-full bg-gradient-to-r from-blue-500 to-cyan-400" />
-            </span>
+            <span className="block text-slate-900 mt-1">Near You</span>
           </h1>
 
-          {/* ③ Subtitle */}
-          <p className="text-slate-300 text-sm sm:text-base max-w-md mb-5 leading-relaxed">
+          {/* Subtitle */}
+          <p className="text-slate-500 text-sm sm:text-base max-w-md mb-6 leading-relaxed">
             Post your tuition needs or discover the perfect tutor effortlessly.
             Trusted by thousands of students across Bangladesh.
           </p>
 
-          {/* ④ Search Bar + Dropdown */}
-          <div
-            ref={searchRef}
-            className="relative w-full max-w-xs sm:max-w-sm md:max-w-md mb-4"
-          >
-            {/* Input */}
-            <div className="flex items-stretch bg-white/10 backdrop-blur-md border border-white/20 rounded-2xl overflow-hidden shadow-2xl focus-within:border-blue-400 focus-within:bg-white/15 transition-all duration-300">
+          {/* Search Bar + Dropdown */}
+          <div ref={searchRef} className="relative w-full max-w-md mb-6">
+            <div className="flex items-stretch bg-slate-50 border border-slate-200 rounded-2xl overflow-hidden shadow-sm focus-within:border-lime-400 focus-within:ring-2 focus-within:ring-lime-100 transition-all duration-300">
               <div className="flex items-center pl-4 pr-2 text-slate-400">
                 {searching ? (
                   <svg
@@ -314,34 +470,32 @@ const HeroSection = () => {
                   searchResults.length > 0 && setShowDropdown(true)
                 }
                 placeholder="Subject, class, location…"
-                className="flex-1 px-2 py-3 sm:py-3.5 bg-transparent text-white placeholder-slate-400 text-sm sm:text-base outline-none min-w-0"
+                className="flex-1 px-2 py-3 sm:py-3.5 bg-transparent text-slate-800 placeholder-slate-400 text-sm sm:text-base outline-none min-w-0"
               />
               <button
                 onClick={handleSearchSubmit}
-                className="shrink-0 bg-blue-500 hover:bg-blue-600 active:bg-blue-700 px-4 sm:px-5 py-3 sm:py-3.5 text-white text-sm font-semibold transition-colors duration-200 rounded-r-2xl"
+                className="shrink-0 bg-lime-600 hover:bg-lime-700 active:bg-lime-800 px-4 sm:px-5 py-3 sm:py-3.5 text-white text-sm font-semibold transition-colors duration-200"
               >
                 Search
               </button>
             </div>
 
-            {/* ✅ Dropdown Results */}
             {showDropdown && (
-              <div className="absolute top-full left-0 right-0 mt-2 z-50 rounded-2xl overflow-hidden shadow-2xl border border-white/10 bg-slate-900/95 backdrop-blur-xl">
+              <div className="absolute top-full left-0 right-0 mt-2 z-50 rounded-2xl overflow-hidden shadow-2xl border border-slate-100 bg-white">
                 {searchResults.length === 0 ? (
                   <div className="px-4 py-5 text-center text-slate-400 text-sm">
                     No tuitions found for "{query}"
                   </div>
                 ) : (
                   <>
-                    {/* Header */}
-                    <div className="px-4 pt-3 pb-1 flex items-center justify-between border-b border-white/5">
-                      <span className="text-[11px] text-slate-500 uppercase tracking-widest font-semibold">
+                    <div className="px-4 pt-3 pb-1 flex items-center justify-between border-b border-slate-100">
+                      <span className="text-[11px] text-slate-400 uppercase tracking-widest font-semibold">
                         {searchResults.length} result
                         {searchResults.length !== 1 ? "s" : ""} found
                       </span>
                       <button
                         onClick={() => setShowDropdown(false)}
-                        className="text-slate-500 hover:text-slate-300 transition-colors p-1"
+                        className="text-slate-400 hover:text-slate-600 transition-colors p-1"
                       >
                         <svg
                           className="w-3.5 h-3.5"
@@ -359,20 +513,18 @@ const HeroSection = () => {
                       </button>
                     </div>
 
-                    {/* Cards */}
                     <ul className="max-h-72 overflow-y-auto">
                       {searchResults.map((tuition, idx) => (
                         <li key={tuition._id}>
                           <button
                             onClick={() => handleCardClick(tuition._id)}
-                            className={`w-full text-left flex items-center gap-3 px-4 py-3 hover:bg-white/5 active:bg-white/10 transition-colors duration-150 group ${
+                            className={`w-full text-left flex items-center gap-3 px-4 py-3 hover:bg-slate-50 active:bg-slate-100 transition-colors duration-150 group ${
                               idx !== searchResults.length - 1
-                                ? "border-b border-white/5"
+                                ? "border-b border-slate-100"
                                 : ""
                             }`}
                           >
-                            {/* Thumbnail */}
-                            <div className="shrink-0 w-11 h-11 rounded-xl overflow-hidden bg-slate-800 border border-white/10">
+                            <div className="shrink-0 w-11 h-11 rounded-xl overflow-hidden bg-slate-100 border border-slate-200">
                               {tuition.image ? (
                                 <img
                                   src={tuition.image}
@@ -381,7 +533,7 @@ const HeroSection = () => {
                                   loading="lazy"
                                 />
                               ) : (
-                                <div className="w-full h-full flex items-center justify-center text-slate-600">
+                                <div className="w-full h-full flex items-center justify-center text-slate-400">
                                   <svg
                                     className="w-5 h-5"
                                     fill="none"
@@ -398,14 +550,12 @@ const HeroSection = () => {
                                 </div>
                               )}
                             </div>
-
-                            {/* Info */}
                             <div className="flex-1 min-w-0">
                               <div className="flex items-center gap-2 mb-0.5">
-                                <span className="text-white text-sm font-semibold truncate group-hover:text-blue-300 transition-colors">
+                                <span className="text-slate-800 text-sm font-semibold truncate group-hover:text-lime-700 transition-colors">
                                   {tuition.subject}
                                 </span>
-                                <span className="shrink-0 text-[10px] bg-blue-500/20 text-blue-300 px-1.5 py-0.5 rounded-md font-medium">
+                                <span className="shrink-0 text-[10px] bg-lime-50 text-lime-700 px-1.5 py-0.5 rounded-md font-medium">
                                   Class {tuition.class}
                                 </span>
                               </div>
@@ -434,20 +584,18 @@ const HeroSection = () => {
                                 </span>
                                 {tuition.budget && (
                                   <>
-                                    <span className="text-slate-600 shrink-0">
+                                    <span className="text-slate-300 shrink-0">
                                       •
                                     </span>
-                                    <span className="text-cyan-400 font-medium shrink-0">
+                                    <span className="text-lime-700 font-medium shrink-0">
                                       ৳{tuition.budget}/mo
                                     </span>
                                   </>
                                 )}
                               </div>
                             </div>
-
-                            {/* Arrow */}
                             <svg
-                              className="w-4 h-4 text-slate-600 group-hover:text-blue-400 group-hover:translate-x-0.5 transition-all duration-150 shrink-0"
+                              className="w-4 h-4 text-slate-300 group-hover:text-lime-600 group-hover:translate-x-0.5 transition-all duration-150 shrink-0"
                               fill="none"
                               viewBox="0 0 24 24"
                               stroke="currentColor"
@@ -464,10 +612,9 @@ const HeroSection = () => {
                       ))}
                     </ul>
 
-                    {/* See all */}
                     <button
                       onClick={handleSearchSubmit}
-                      className="w-full px-4 py-3 text-sm text-blue-400 hover:text-blue-300 hover:bg-white/5 transition-colors border-t border-white/5 text-center font-medium"
+                      className="w-full px-4 py-3 text-sm text-lime-700 hover:text-lime-800 hover:bg-slate-50 transition-colors border-t border-slate-100 text-center font-medium"
                     >
                       See all results for "{query}" →
                     </button>
@@ -477,11 +624,11 @@ const HeroSection = () => {
             )}
           </div>
 
-          {/* ⑤ CTAs */}
-          <div className="flex flex-wrap items-center gap-3 mb-6">
+          {/* CTAs */}
+          <div className="flex flex-wrap items-center gap-3 mb-8">
             <a
               href="/tutors"
-              className="inline-flex items-center gap-2 bg-blue-500 hover:bg-blue-600 active:scale-95 text-white text-sm sm:text-base font-bold px-5 py-2.5 rounded-xl shadow-lg shadow-blue-500/30 transition-all duration-200"
+              className="inline-flex items-center gap-2 bg-lime-600 hover:bg-lime-700 active:scale-95 text-white text-sm sm:text-base font-bold px-5 py-2.5 rounded-xl shadow-lg shadow-lime-600/20 transition-all duration-200"
             >
               <svg
                 className="w-4 h-4"
@@ -500,23 +647,56 @@ const HeroSection = () => {
             </a>
             <a
               href="/add-tuition"
-              className="inline-flex items-center gap-2 bg-white/10 hover:bg-white/20 active:scale-95 border border-white/25 text-white text-sm sm:text-base font-semibold px-5 py-2.5 rounded-xl backdrop-blur-sm transition-all duration-200"
+              className="inline-flex items-center gap-2 bg-white hover:bg-slate-50 active:scale-95 border border-slate-200 text-slate-700 text-sm sm:text-base font-semibold px-5 py-2.5 rounded-xl transition-all duration-200"
             >
               Post a Tuition
             </a>
           </div>
 
-          {/* ⑥ Animated Stats */}
-          <div ref={statsRef} className="flex flex-wrap gap-6 sm:gap-10">
-            {statItems.map((stat) => (
-              <AnimatedStat
-                key={stat.label}
-                value={stat.value}
-                label={stat.label}
-                start={statsVisible}
-              />
-            ))}
+          {/* Bottom row: stats + a signature "network coverage" strip
+              that ties directly back to the map's 8 district nodes */}
+          <div className="flex flex-wrap items-center gap-8">
+            <div ref={statsRef} className="flex flex-wrap gap-8">
+              {statItems.map((stat) => (
+                <AnimatedStat
+                  key={stat.label}
+                  value={stat.value}
+                  label={stat.label}
+                  start={statsVisible}
+                />
+              ))}
+            </div>
+
+            <div className="flex items-center gap-3 bg-white border border-slate-200 rounded-2xl px-4 py-2.5 shadow-sm">
+              <div className="flex -space-x-2">
+                {CITY_NODES.slice(0, 5).map((n, i) => (
+                  <span
+                    key={n.id}
+                    className={`w-2.5 h-2.5 rounded-full border-2 border-white ${
+                      n.hub ? "bg-lime-500" : "bg-lime-700/70"
+                    }`}
+                    style={{ zIndex: 5 - i }}
+                  />
+                ))}
+              </div>
+              <div className="leading-tight">
+                <p className="text-xs font-bold text-slate-800">
+                  8 Districts, 1 Network
+                </p>
+                <p className="text-[10px] text-slate-400">
+                  from Dinajpur to Barisal
+                </p>
+              </div>
+            </div>
           </div>
+        </div>
+
+        {/* ---------------- RIGHT: MAP GRAPHIC ---------------- */}
+        <div className="relative">
+          <MapGraphic
+            activeNode={activeTicker}
+            approvedTuitions={stats?.approvedTuitions}
+          />
         </div>
       </div>
     </section>
