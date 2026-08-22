@@ -15,10 +15,10 @@ const Footer = () => {
         {/* About Platform */}
         <div>
           <h2 className="text-lg font-semibold text-white mb-4">
-            About eduPulseBD
+            About eduPulseBd
           </h2>
           <p className="text-sm leading-6">
-            eduPulseBD connects students with trusted tutors across Bangladesh.
+            eduPulseBd connects students with trusted tutors across Bangladesh.
             Our goal is to make learning easier, smarter, and accessible for
             everyone.
           </p>
@@ -114,7 +114,7 @@ const Footer = () => {
 
       {/* Bottom Copyright */}
       <div className="border-t border-gray-700 py-4 text-center text-sm text-gray-400">
-        © {new Date().getFullYear()} eduPulseBD Inc. All rights reserved.
+        © {new Date().getFullYear()} eduPulseBd Inc. All rights reserved.
       </div>
     </footer>
   );

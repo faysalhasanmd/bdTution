@@ -29,12 +29,14 @@ const AnimatedStat = ({ value, label, start }) => {
     <div className="flex flex-col items-start">
       <span
         className={`text-2xl sm:text-3xl font-extrabold leading-none transition-all duration-500 ${
-          start && num ? "text-slate-900" : "text-slate-300 animate-pulse"
+          start && num
+            ? "text-slate-900 dark:text-white"
+            : "text-slate-300 dark:text-gray-600 animate-pulse"
         }`}
       >
         {start && num ? `${count.toLocaleString()}+` : "..."}
       </span>
-      <span className="text-slate-500 text-[11px] sm:text-xs mt-0.5 uppercase tracking-widest font-medium">
+      <span className="text-slate-500 dark:text-gray-400 text-[11px] sm:text-xs mt-0.5 uppercase tracking-widest font-medium">
         {label}
       </span>
     </div>
@@ -79,7 +81,7 @@ const MapGraphic = ({ activeNode, approvedTuitions }) => {
                 cx={cx}
                 cy={cy}
                 r="1.6"
-                className="fill-slate-300"
+                className="fill-slate-300 dark:fill-gray-700"
               />
             );
           }),
@@ -97,10 +99,9 @@ const MapGraphic = ({ activeNode, approvedTuitions }) => {
               key={n.id}
               d={`M ${n.x} ${n.y} Q ${midX} ${midY} 300 230`}
               fill="none"
-              stroke="#65a30d"
               strokeWidth="1.5"
               strokeDasharray="4 5"
-              className="opacity-60"
+              className="stroke-lime-600 dark:stroke-lime-400 opacity-60"
             >
               <animate
                 attributeName="stroke-dashoffset"
@@ -120,7 +121,11 @@ const MapGraphic = ({ activeNode, approvedTuitions }) => {
               cx={n.x}
               cy={n.y}
               r={n.hub ? 7 : 4.5}
-              className={n.hub ? "fill-lime-500" : "fill-lime-700"}
+              className={
+                n.hub
+                  ? "fill-lime-500 dark:fill-lime-400"
+                  : "fill-lime-700 dark:fill-lime-500"
+              }
             />
             {n.hub && (
               <circle
@@ -164,8 +169,8 @@ const MapGraphic = ({ activeNode, approvedTuitions }) => {
           <span
             className={`flex items-center gap-1.5 whitespace-nowrap rounded-full border px-2.5 py-1 text-[11px] font-semibold shadow-sm backdrop-blur-sm ${
               n.hub
-                ? "bg-lime-700 text-white border-lime-700"
-                : "bg-white/90 text-slate-700 border-slate-200"
+                ? "bg-lime-700 text-white border-lime-700 dark:bg-lime-600 dark:border-lime-600"
+                : "bg-white/90 text-slate-700 border-slate-200 dark:bg-gray-800/90 dark:text-gray-200 dark:border-gray-700"
             }`}
           >
             {n.hub && (
@@ -187,17 +192,17 @@ const MapGraphic = ({ activeNode, approvedTuitions }) => {
       {activeNode && (
         <div
           key={activeNode.city}
-          className="absolute top-[4%] right-[0%] flex items-center gap-2.5 bg-white rounded-2xl shadow-xl border border-lime-100 pl-2.5 pr-3.5 py-2 animate-[popIn_0.4s_ease-out]"
+          className="absolute top-[4%] right-[0%] flex items-center gap-2.5 bg-white dark:bg-gray-800 rounded-2xl shadow-xl border border-lime-100 dark:border-lime-900/40 pl-2.5 pr-3.5 py-2 animate-[popIn_0.4s_ease-out]"
         >
           <span className="relative flex h-2 w-2 shrink-0">
             <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-lime-400 opacity-75" />
             <span className="relative inline-flex rounded-full h-2 w-2 bg-lime-500" />
           </span>
           <div className="leading-tight">
-            <p className="text-[11px] font-bold text-slate-800">
+            <p className="text-[11px] font-bold text-slate-800 dark:text-gray-100">
               {activeNode.subject}
             </p>
-            <p className="text-[10px] text-slate-400">
+            <p className="text-[10px] text-slate-400 dark:text-gray-500">
               Just posted · {activeNode.city}
             </p>
           </div>
@@ -206,10 +211,10 @@ const MapGraphic = ({ activeNode, approvedTuitions }) => {
 
       {/* Signature element #2 — coverage card (bottom-left): the steady
           counterpart to the live ticker, showing network scale at a glance */}
-      <div className="absolute bottom-[4%] left-[0%] flex items-center gap-2.5 bg-white rounded-2xl shadow-xl border border-lime-100 pl-2.5 pr-3.5 py-2">
-        <span className="flex items-center justify-center h-6 w-6 rounded-full bg-lime-50 shrink-0">
+      <div className="absolute bottom-[4%] left-[0%] flex items-center gap-2.5 bg-white dark:bg-gray-800 rounded-2xl shadow-xl border border-lime-100 dark:border-lime-900/40 pl-2.5 pr-3.5 py-2">
+        <span className="flex items-center justify-center h-6 w-6 rounded-full bg-lime-50 dark:bg-lime-950/40 shrink-0">
           <svg
-            className="w-3.5 h-3.5 text-lime-700"
+            className="w-3.5 h-3.5 text-lime-700 dark:text-lime-400"
             fill="none"
             viewBox="0 0 24 24"
             stroke="currentColor"
@@ -223,10 +228,12 @@ const MapGraphic = ({ activeNode, approvedTuitions }) => {
           </svg>
         </span>
         <div className="leading-tight">
-          <p className="text-[11px] font-bold text-slate-800">
+          <p className="text-[11px] font-bold text-slate-800 dark:text-gray-100">
             {approvedTuitions ? `${approvedTuitions}+` : "…"} active on the map
           </p>
-          <p className="text-[10px] text-slate-400">8 districts, growing</p>
+          <p className="text-[10px] text-slate-400 dark:text-gray-500">
+            8 districts, growing
+          </p>
         </div>
       </div>
     </div>
@@ -363,7 +370,7 @@ const HeroSection = () => {
 
   if (!loaded) {
     return (
-      <div className="flex justify-center items-center h-[65vh] bg-white">
+      <div className="flex justify-center items-center h-[65vh] bg-white dark:bg-gray-900">
         <LoadingSpinner />
       </div>
     );
@@ -376,7 +383,7 @@ const HeroSection = () => {
   ];
 
   return (
-    <section className="relative w-full bg-white overflow-hidden">
+    <section className="relative w-full bg-white dark:bg-gray-900 overflow-hidden transition-colors duration-300">
       <style>{`
         @keyframes popIn {
           0% { opacity: 0; transform: translateY(-6px) scale(0.96); }
@@ -389,15 +396,15 @@ const HeroSection = () => {
         <div>
           {/* Eyebrow */}
           <div className="flex items-center gap-2 mb-4">
-            <span className="h-px w-6 bg-lime-600" />
-            <span className="text-lime-700 text-[11px] sm:text-xs font-bold uppercase tracking-[0.2em]">
+            <span className="h-px w-6 bg-lime-600 dark:bg-lime-400" />
+            <span className="text-lime-700 dark:text-lime-400 text-[11px] sm:text-xs font-bold uppercase tracking-[0.2em]">
               Bangladesh's #1 Tuition Platform
             </span>
           </div>
 
           {/* Headline */}
-          <h1 className="text-3xl sm:text-4xl md:text-[2.4rem] font-extrabold text-slate-900 leading-[1.08] mb-4 tracking-tight">
-            <span className="block text-lime-600 min-h-[1.2em]">
+          <h1 className="text-3xl sm:text-4xl md:text-[2.4rem] font-extrabold text-slate-900 dark:text-white leading-[1.08] mb-4 tracking-tight">
+            <span className="block text-lime-600 dark:text-lime-400 min-h-[1.2em]">
               <Typewriter
                 words={[
                   "Find The Best Home Tutors",
@@ -412,19 +419,21 @@ const HeroSection = () => {
                 delaySpeed={2000}
               />
             </span>
-            <span className="block text-slate-900 mt-1">Near You</span>
+            <span className="block text-slate-900 dark:text-white mt-1">
+              Near You
+            </span>
           </h1>
 
           {/* Subtitle */}
-          <p className="text-slate-500 text-sm sm:text-base max-w-md mb-6 leading-relaxed">
+          <p className="text-slate-500 dark:text-gray-400 text-sm sm:text-base max-w-md mb-6 leading-relaxed">
             Post your tuition needs or discover the perfect tutor effortlessly.
             Trusted by thousands of students across Bangladesh.
           </p>
 
           {/* Search Bar + Dropdown */}
           <div ref={searchRef} className="relative w-full max-w-md mb-6">
-            <div className="flex items-stretch bg-slate-50 border border-slate-200 rounded-2xl overflow-hidden shadow-sm focus-within:border-lime-400 focus-within:ring-2 focus-within:ring-lime-100 transition-all duration-300">
-              <div className="flex items-center pl-4 pr-2 text-slate-400">
+            <div className="flex items-stretch bg-slate-50 dark:bg-gray-800 border border-slate-200 dark:border-gray-700 rounded-2xl overflow-hidden shadow-sm focus-within:border-lime-400 dark:focus-within:border-lime-500 focus-within:ring-2 focus-within:ring-lime-100 dark:focus-within:ring-lime-900/40 transition-all duration-300">
+              <div className="flex items-center pl-4 pr-2 text-slate-400 dark:text-gray-500">
                 {searching ? (
                   <svg
                     className="w-4 h-4 sm:w-5 sm:h-5 animate-spin"
@@ -470,7 +479,7 @@ const HeroSection = () => {
                   searchResults.length > 0 && setShowDropdown(true)
                 }
                 placeholder="Subject, class, location…"
-                className="flex-1 px-2 py-3 sm:py-3.5 bg-transparent text-slate-800 placeholder-slate-400 text-sm sm:text-base outline-none min-w-0"
+                className="flex-1 px-2 py-3 sm:py-3.5 bg-transparent text-slate-800 dark:text-gray-100 placeholder-slate-400 dark:placeholder-gray-500 text-sm sm:text-base outline-none min-w-0"
               />
               <button
                 onClick={handleSearchSubmit}
@@ -481,21 +490,21 @@ const HeroSection = () => {
             </div>
 
             {showDropdown && (
-              <div className="absolute top-full left-0 right-0 mt-2 z-50 rounded-2xl overflow-hidden shadow-2xl border border-slate-100 bg-white">
+              <div className="absolute top-full left-0 right-0 mt-2 z-50 rounded-2xl overflow-hidden shadow-2xl border border-slate-100 dark:border-gray-700 bg-white dark:bg-gray-800">
                 {searchResults.length === 0 ? (
-                  <div className="px-4 py-5 text-center text-slate-400 text-sm">
+                  <div className="px-4 py-5 text-center text-slate-400 dark:text-gray-500 text-sm">
                     No tuitions found for "{query}"
                   </div>
                 ) : (
                   <>
-                    <div className="px-4 pt-3 pb-1 flex items-center justify-between border-b border-slate-100">
-                      <span className="text-[11px] text-slate-400 uppercase tracking-widest font-semibold">
+                    <div className="px-4 pt-3 pb-1 flex items-center justify-between border-b border-slate-100 dark:border-gray-700">
+                      <span className="text-[11px] text-slate-400 dark:text-gray-500 uppercase tracking-widest font-semibold">
                         {searchResults.length} result
                         {searchResults.length !== 1 ? "s" : ""} found
                       </span>
                       <button
                         onClick={() => setShowDropdown(false)}
-                        className="text-slate-400 hover:text-slate-600 transition-colors p-1"
+                        className="text-slate-400 dark:text-gray-500 hover:text-slate-600 dark:hover:text-gray-300 transition-colors p-1"
                       >
                         <svg
                           className="w-3.5 h-3.5"
@@ -518,13 +527,13 @@ const HeroSection = () => {
                         <li key={tuition._id}>
                           <button
                             onClick={() => handleCardClick(tuition._id)}
-                            className={`w-full text-left flex items-center gap-3 px-4 py-3 hover:bg-slate-50 active:bg-slate-100 transition-colors duration-150 group ${
+                            className={`w-full text-left flex items-center gap-3 px-4 py-3 hover:bg-slate-50 dark:hover:bg-gray-700/50 active:bg-slate-100 dark:active:bg-gray-700 transition-colors duration-150 group ${
                               idx !== searchResults.length - 1
-                                ? "border-b border-slate-100"
+                                ? "border-b border-slate-100 dark:border-gray-700"
                                 : ""
                             }`}
                           >
-                            <div className="shrink-0 w-11 h-11 rounded-xl overflow-hidden bg-slate-100 border border-slate-200">
+                            <div className="shrink-0 w-11 h-11 rounded-xl overflow-hidden bg-slate-100 dark:bg-gray-700 border border-slate-200 dark:border-gray-600">
                               {tuition.image ? (
                                 <img
                                   src={tuition.image}
@@ -533,7 +542,7 @@ const HeroSection = () => {
                                   loading="lazy"
                                 />
                               ) : (
-                                <div className="w-full h-full flex items-center justify-center text-slate-400">
+                                <div className="w-full h-full flex items-center justify-center text-slate-400 dark:text-gray-500">
                                   <svg
                                     className="w-5 h-5"
                                     fill="none"
@@ -552,14 +561,14 @@ const HeroSection = () => {
                             </div>
                             <div className="flex-1 min-w-0">
                               <div className="flex items-center gap-2 mb-0.5">
-                                <span className="text-slate-800 text-sm font-semibold truncate group-hover:text-lime-700 transition-colors">
+                                <span className="text-slate-800 dark:text-gray-100 text-sm font-semibold truncate group-hover:text-lime-700 dark:group-hover:text-lime-400 transition-colors">
                                   {tuition.subject}
                                 </span>
-                                <span className="shrink-0 text-[10px] bg-lime-50 text-lime-700 px-1.5 py-0.5 rounded-md font-medium">
+                                <span className="shrink-0 text-[10px] bg-lime-50 dark:bg-lime-950/40 text-lime-700 dark:text-lime-400 px-1.5 py-0.5 rounded-md font-medium">
                                   Class {tuition.class}
                                 </span>
                               </div>
-                              <div className="flex items-center gap-2 text-xs text-slate-400">
+                              <div className="flex items-center gap-2 text-xs text-slate-400 dark:text-gray-500">
                                 <span className="flex items-center gap-1 truncate">
                                   <svg
                                     className="w-3 h-3 shrink-0"
@@ -584,10 +593,10 @@ const HeroSection = () => {
                                 </span>
                                 {tuition.budget && (
                                   <>
-                                    <span className="text-slate-300 shrink-0">
+                                    <span className="text-slate-300 dark:text-gray-600 shrink-0">
                                       •
                                     </span>
-                                    <span className="text-lime-700 font-medium shrink-0">
+                                    <span className="text-lime-700 dark:text-lime-400 font-medium shrink-0">
                                       ৳{tuition.budget}/mo
                                     </span>
                                   </>
@@ -595,7 +604,7 @@ const HeroSection = () => {
                               </div>
                             </div>
                             <svg
-                              className="w-4 h-4 text-slate-300 group-hover:text-lime-600 group-hover:translate-x-0.5 transition-all duration-150 shrink-0"
+                              className="w-4 h-4 text-slate-300 dark:text-gray-600 group-hover:text-lime-600 dark:group-hover:text-lime-400 group-hover:translate-x-0.5 transition-all duration-150 shrink-0"
                               fill="none"
                               viewBox="0 0 24 24"
                               stroke="currentColor"
@@ -614,7 +623,7 @@ const HeroSection = () => {
 
                     <button
                       onClick={handleSearchSubmit}
-                      className="w-full px-4 py-3 text-sm text-lime-700 hover:text-lime-800 hover:bg-slate-50 transition-colors border-t border-slate-100 text-center font-medium"
+                      className="w-full px-4 py-3 text-sm text-lime-700 dark:text-lime-400 hover:text-lime-800 dark:hover:text-lime-300 hover:bg-slate-50 dark:hover:bg-gray-700/50 transition-colors border-t border-slate-100 dark:border-gray-700 text-center font-medium"
                     >
                       See all results for "{query}" →
                     </button>
@@ -628,7 +637,7 @@ const HeroSection = () => {
           <div className="flex flex-wrap items-center gap-3 mb-8">
             <a
               href="/tutors"
-              className="inline-flex items-center gap-2 bg-lime-600 hover:bg-lime-700 active:scale-95 text-white text-sm sm:text-base font-bold px-5 py-2.5 rounded-xl shadow-lg shadow-lime-600/20 transition-all duration-200"
+              className="inline-flex items-center gap-2 bg-lime-600 hover:bg-lime-700 active:scale-95 text-white text-sm sm:text-base font-bold px-5 py-2.5 rounded-xl shadow-lg shadow-lime-600/20 dark:shadow-lime-900/40 transition-all duration-200"
             >
               <svg
                 className="w-4 h-4"
@@ -647,7 +656,7 @@ const HeroSection = () => {
             </a>
             <a
               href="/add-tuition"
-              className="inline-flex items-center gap-2 bg-white hover:bg-slate-50 active:scale-95 border border-slate-200 text-slate-700 text-sm sm:text-base font-semibold px-5 py-2.5 rounded-xl transition-all duration-200"
+              className="inline-flex items-center gap-2 bg-white dark:bg-gray-800 hover:bg-slate-50 dark:hover:bg-gray-700 active:scale-95 border border-slate-200 dark:border-gray-700 text-slate-700 dark:text-gray-200 text-sm sm:text-base font-semibold px-5 py-2.5 rounded-xl transition-all duration-200"
             >
               Post a Tuition
             </a>
@@ -667,23 +676,25 @@ const HeroSection = () => {
               ))}
             </div>
 
-            <div className="flex items-center gap-3 bg-white border border-slate-200 rounded-2xl px-4 py-2.5 shadow-sm">
+            <div className="flex items-center gap-3 bg-white dark:bg-gray-800 border border-slate-200 dark:border-gray-700 rounded-2xl px-4 py-2.5 shadow-sm">
               <div className="flex -space-x-2">
                 {CITY_NODES.slice(0, 5).map((n, i) => (
                   <span
                     key={n.id}
-                    className={`w-2.5 h-2.5 rounded-full border-2 border-white ${
-                      n.hub ? "bg-lime-500" : "bg-lime-700/70"
+                    className={`w-2.5 h-2.5 rounded-full border-2 border-white dark:border-gray-800 ${
+                      n.hub
+                        ? "bg-lime-500 dark:bg-lime-400"
+                        : "bg-lime-700/70 dark:bg-lime-500/70"
                     }`}
                     style={{ zIndex: 5 - i }}
                   />
                 ))}
               </div>
               <div className="leading-tight">
-                <p className="text-xs font-bold text-slate-800">
+                <p className="text-xs font-bold text-slate-800 dark:text-gray-100">
                   8 Districts, 1 Network
                 </p>
-                <p className="text-[10px] text-slate-400">
+                <p className="text-[10px] text-slate-400 dark:text-gray-500">
                   from Dinajpur to Barisal
                 </p>
               </div>

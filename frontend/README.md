@@ -1,16 +1,16 @@
-# eduPulseBD – Tuition Management System
+# eduPulseBd – Tuition Management System
 
 ## Live Links
 
 - **Live Site:** https://cerulean-maamoul-f79e46.netlify.app/
-- **Client Repo:** https://github.com/faysalhasanmd/eduPulseBD/tree/main/frontend
-- **Server Repo:** https://github.com/faysalhasanmd/eduPulseBD/tree/main/backend
+- **Client Repo:** https://github.com/faysalhasanmd/eduPulseBd/tree/main/frontend
+- **Server Repo:** https://github.com/faysalhasanmd/eduPulseBd/tree/main/backend
 
 ---
 
 ## Project Purpose
 
-**eduPulseBD** is a MERN-stack Tuition Management System that connects students with qualified tutors in a structured and secure way.
+**eduPulseBd** is a MERN-stack Tuition Management System that connects students with qualified tutors in a structured and secure way.
 
 ### Why this project?
 
@@ -165,6 +165,6 @@
 ### 1️ Clone the repositories
 
 ```bash
-git clone https://github.com/faysalhasanmd/eduPulseBD/tree/main/frontend
-git clone https://github.com/faysalhasanmd/eduPulseBD/tree/main/backend
+git clone https://github.com/faysalhasanmd/eduPulseBd/tree/main/frontend
+git clone https://github.com/faysalhasanmd/eduPulseBd/tree/main/backend
 ```

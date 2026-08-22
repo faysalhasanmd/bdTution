@@ -56,7 +56,7 @@ const BLOG_POSTS = [
   },
   {
     id: 4,
-    title: "How to Build a Standout Tutor Profile on eduPulseBD",
+    title: "How to Build a Standout Tutor Profile on eduPulseBd",
     excerpt:
       "Your profile is your first impression. Learn how top-rated tutors on our platform write compelling bios, set competitive rates, and earn trust from parents.",
     category: "Tutors",
@@ -156,7 +156,7 @@ const BLOG_POSTS = [
     id: 11,
     title: "Top 7 Subjects Students Need the Most Help With in Bangladesh",
     excerpt:
-      "Math, Physics, and English consistently top the list. We analyzed thousands of tuition requests on eduPulseBD to identify where students struggle most — and why.",
+      "Math, Physics, and English consistently top the list. We analyzed thousands of tuition requests on eduPulseBd to identify where students struggle most — and why.",
     category: "Education",
     author: "Arif Hossain",
     authorAvatar: "AH",
@@ -198,7 +198,7 @@ const BLOG_POSTS = [
     id: 14,
     title: "Why Girls in Rural Bangladesh Are Missing Out on Quality Tuition",
     excerpt:
-      "Despite progress in enrollment, access to quality private tutoring remains unequal. eduPulseBD is working to change that — here's the story and what still needs to be done.",
+      "Despite progress in enrollment, access to quality private tutoring remains unequal. eduPulseBd is working to change that — here's the story and what still needs to be done.",
     category: "Education",
     author: "Tania Begum",
     authorAvatar: "TB",
@@ -210,7 +210,7 @@ const BLOG_POSTS = [
   },
   {
     id: 15,
-    title: "How eduPulseBD Verifies Tutors: Our Trust & Safety Process",
+    title: "How eduPulseBd Verifies Tutors: Our Trust & Safety Process",
     excerpt:
       "Parents often ask: how do we know if a tutor is qualified and safe? Here's a transparent look at our verification steps, review system, and ongoing quality monitoring.",
     category: "Tutors",
@@ -629,7 +629,7 @@ export default function Blog() {
       >
         <div className="max-w-4xl mx-auto text-center">
           <p className="text-blue-400 text-sm font-semibold tracking-widest uppercase mb-3">
-            eduPulseBD Blog
+            eduPulseBd Blog
           </p>
           <h1 className="text-3xl md:text-5xl font-extrabold text-white leading-tight mb-4">
             Insights for Learners,{" "}

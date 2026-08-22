@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { useNavigate } from "react-router";
+import { useNavigate, useSearchParams } from "react-router";
 import axios from "axios";
 import Card from "../../Home/Card";
 
@@ -151,12 +151,15 @@ const Pagination = ({ currentPage, totalPages, onPageChange }) => {
 // ─── Main Component ───────────────────────────────────────────────────────────
 const AllTuitions = () => {
   const navigate = useNavigate();
+  const [searchParams] = useSearchParams();
   const [tuitions, setTuitions] = useState([]);
   const [loading, setLoading] = useState(true);
   const [search, setSearch] = useState("");
   const [sortOption, setSortOption] = useState("");
   const [filterClass, setFilterClass] = useState("");
-  const [filterSubject, setFilterSubject] = useState("");
+  const [filterSubject, setFilterSubject] = useState(
+    () => searchParams.get("subject") || "",
+  );
   const [filterLocation, setFilterLocation] = useState("");
   const [filtersOpen, setFiltersOpen] = useState(false);
   const [currentPage, setCurrentPage] = useState(1);

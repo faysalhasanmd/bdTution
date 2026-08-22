@@ -1,4 +1,4 @@
-# eduPulseBD – Tuition Management System
+# eduPulseBd – Tuition Management System
 
 > A full-stack MERN-based platform that seamlessly connects **students** with **qualified tutors** — with secure payments, role-based dashboards, and admin control.
 
@@ -38,7 +38,7 @@
 
 ## Project Purpose
 
-**eduPulseBD** is a MERN-stack Tuition Management System that connects students with qualified tutors in a structured and secure way.
+**eduPulseBd** is a MERN-stack Tuition Management System that connects students with qualified tutors in a structured and secure way.
 
 ### Why This Project?
 

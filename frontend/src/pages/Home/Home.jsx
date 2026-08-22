@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { useLocation } from "react-router";
+import { Link, useLocation } from "react-router";
 import AOS from "aos";
 import "aos/dist/aos.css";
 import Tuition from "../../components/Home/Tuition";
@@ -245,10 +245,10 @@ const CategoriesSection = () => {
     { label: "English", icon: "📖", count: "95+ tutors" },
     { label: "Physics", icon: "⚛️", count: "80+ tutors" },
     { label: "Chemistry", icon: "🧪", count: "70+ tutors" },
-    { label: "Biology", icon: "🧬", count: "65+ tutors" },
-    { label: "ICT", icon: "💻", count: "55+ tutors" },
-    { label: "SSC Batch", icon: "🎓", count: "100+ tutors" },
-    { label: "HSC Batch", icon: "🏫", count: "90+ tutors" },
+    { label: "DSA", icon: "🧬", count: "65+ tutors" },
+    { label: "Cyber Security", icon: "💻", count: "55+ tutors" },
+    { label: "Python", icon: "🎓", count: "100+ tutors" },
+    { label: "Web", icon: "🏫", count: "90+ tutors" },
   ];
 
   return (
@@ -261,7 +261,8 @@ const CategoriesSection = () => {
       <div className="max-w-6xl mx-auto px-6 mt-10">
         <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-4">
           {categories.map((cat, i) => (
-            <div
+            <Link
+              to={`/all-tuitions?subject=${encodeURIComponent(cat.label)}`}
               key={i}
               data-aos="zoom-in"
               data-aos-delay={i * 60}
@@ -274,7 +275,7 @@ const CategoriesSection = () => {
               <p className="text-xs text-gray-400 dark:text-gray-300 group-hover:text-blue-100 mt-1">
                 {cat.count}
               </p>
-            </div>
+            </Link>
           ))}
         </div>
       </div>

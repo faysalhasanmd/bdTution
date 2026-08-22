@@ -92,7 +92,7 @@ const Navbar = ({ sidebarOpen, onSidebarToggle }) => {
                   className="w-9 h-9 object-contain group-hover:scale-105 transition-transform duration-300"
                 />
                 <span className="font-bold text-xl tracking-tight hidden sm:block bg-lime-600 bg-clip-text text-transparent dark:from-white dark:to-gray-300">
-                  eduPulseBD
+                  eduPulseBd
                 </span>
               </Link>
             </div>

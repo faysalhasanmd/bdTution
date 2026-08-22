@@ -115,7 +115,7 @@ const PrivacyPolicy = () => {
         </svg>
       ),
       content:
-        "eduPulseBD uses third-party services including Firebase (authentication), MongoDB Atlas (database), and Stripe (payments). These services have their own privacy policies which we encourage you to review.",
+        "eduPulseBd uses third-party services including Firebase (authentication), MongoDB Atlas (database), and Stripe (payments). These services have their own privacy policies which we encourage you to review.",
     },
     {
       title: "6. Your Rights",
@@ -232,7 +232,7 @@ const PrivacyPolicy = () => {
             Last updated: June {new Date().getFullYear()}
           </p>
           <p className="text-gray-500 dark:text-gray-400 text-sm leading-relaxed max-w-xl mx-auto">
-            At eduPulseBD, your privacy is important to us. This policy explains
+            At eduPulseBd, your privacy is important to us. This policy explains
             how we collect, use, and protect your personal information safely.
           </p>
         </div>
